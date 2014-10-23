@@ -39,85 +39,29 @@
 
 /** \mainpage CRL Documentation
  *  \section sec_intro Introduction
- *  The library CRL (Chronicle Recognition Library) has been developed
+ *  CRL (Chronicle Recognition Library) has been developed
  *  by the Department for the Conception and evaluation of Sytem 
  *  Perfromances (DCPS) of the French Aerospace Lab (Office
  *  National d'Etudes et Recherches Aérospatiales -- ONERA). This
- *  C++ library includes 
+ *  C++ library allows for the analysis of complex event flows to recognise
+ *  in them predetermined searched-for behaviours. These behaviours are defined 
+ *  as specific arrangements of events using a behaviour description language
+ *  called the Chronicle Language. The behaviour recognition process relies 
+ *  upon a solid mathematical framework.
  *
- *  \subsection sec_recup Où trouver la bibliothèque ?
- *  La bibliothèque FMT peut être récupérée de deux façons différentes :
- * 
- *  - une version stable se trouve disponible en permanence sur le serveur
- *  documentaire Knowledge Tree de DPRS (serveur «&nbsp;lala&nbsp;»)
- *  
- *  - les utilisateurs désireux de voir les dernières évolutions pourront 
- *  se procurer une version «&nbsp;bêta&nbsp;» via CVS sur le serveur
- *  "lili" de DPRS. Sous Windows, l'outil WinCVS offre une interface
- *  conviviale au dessus de CVS. 
+ *  \subsection sec_recup Where to find the library?
+ *  CRL is available online at the following url:
+ *               http://crl.googlecode.com/svn/crl/
  *
- *  Il est aussi possible d'obtenir la bibliothèque ou des éléments de la 
- *  bibliothèque en s'adressant aux membres de l'unité TCS (Techniques pour 
- *  la Conception et la Simulation de systèmes). Contacts :
+ * Contacts :
+ *  - Ariane Piel  : Ariane.Piel@onera.fr
  *  - Jean Bourrely   : Jean.Bourrely@onera.fr
- *  - Robert Cordeau  : Robert.Cordeau@onera.fr
- *  - Romain Kervarc  : Romain.Kervarc@onera.fr
- *  - Thierry Marchon : Thierry.Marchon@onera.fr
- *  - Claire Quillien : Claire.Quillien@onera.fr
  *
  *  \section sec_intall Installation
- *  Pour utiliser la bibliothèque, il suffit de disposer des fichiers
- *  "include" et des librairies compilées "lib". On peut aussi travailler
- *  directement sur les sources (fichiers ".cpp"). 
- *
- *  \subsection sec_debug La directive de compilation FMT_DEBUG
- *  Cette directive est définie pour les versions de Debug de la bibliothèque
- *  FMT. 
- *
- *  Pour définir une directive de compilation :
- *  - sous Visual C++, dans les "Settings" du projet, onglets "Preprocessor"
- *  et "Preprocessor directives", indiquer <tt>FMT_DEBUG</tt> dans la liste ;
- *  - sous GNU g++, utiliser l'option <tt>-DFMT_DEBUG</tt>.
- *
- *  \warning Un programme peut avoir un comportement différent en mode
- *  Debug ou Release. Un calcul peut par exemple lever une exception en mode 
- *  Debug, ce qui ne sera pas le cas en mode Release (on continue le calcul  
- *  avec des NAN, des +/-INF, ...). On risque alors d'avoir l'impression
- *  que le programme «&nbsp;marche&nbsp;»  en mode Release, et pas en Debug, MAIS CE N'EST
- *  PAS LE CAS ! <em>Il faut absolument résoudre tous les problèmes en mode Debug
- *  avant de passer à une version Release.</em>
- *
- *  \section sec_modules Les modules de la bibliothèque
- *  La bibliothèque FMT est séparée en plusieurs modules. D'un point de vue
- *  informatique, les modules n'ont pas d'existence concrète, si ce n'est pour
- *  leurs fichiers sources "cpp" qui se trouvent dans des répertoires séparés.
- *
- *  \todo Ajout d'un module de géométrie euclidienne.
- *
- *  Liste détaillée des modules:
- *  - \subpage General "Module général" : Il définit des macros, des méthodes 
- *    d'allocation, un mode de gestion des erreurs, un logger, des utilitaires 
- *    pour les tests unitaires.
- *  - \subpage Matrix_Vector "Module matrices-vecteurs" : Il définit deux classes 
- *    pour manipuler les nombres réels : FMT::DVector et FMT::DMatrix.
- *  - \subpage Probability "Module lois de probabilités" : Il contient
- *    la définition de plusieurs lois de probabilités : distributions
- *    \link FMT::UniformDistribution uniforme \endlink,
- *    \link FMT::NormalDistribution gaussienne \endlink,
- *    \link FMT::GammaDistribution loi gamma \endlink; ainsi que des
- *    générateurs de nombres aléatoires.
- */
-
-/** \page Geometry Module Géométrie
- *  <CENTER><B>À VENIR</B></CENTER>
- */
- 
-/** \page General Module general
- *  Module commun à toute la bibliothèque. Il définit :
- *  - des macros : #NULL, #CONDITION(TST, MSG), 
- *    #DELETE_AND_NULLIFY(x), #DELETE_AND_NULLIFY_TAB(x)
- * 
- */
+ * In order to use the library, it is sufficient to have the "include"
+ * files along with the compiled library "lib". One may also directly work
+ * with the source files (".cpp").
+*/
 
 
 
