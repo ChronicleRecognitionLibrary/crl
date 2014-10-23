@@ -40,8 +40,8 @@
 /** \mainpage CRL Documentation
  *  \section sec_intro Introduction
  *  CRL (Chronicle Recognition Library) has been developed
- *  by the Department for the Conception and evaluation of Sytem 
- *  Perfromances (DCPS) of the French Aerospace Lab (Office
+ *  by the Department for the Conception and evaluation of System 
+ *  Performances (DCPS) of the French Aerospace Lab (Office
  *  National d'Etudes et Recherches Aérospatiales -- ONERA). This
  *  C++ library allows for the analysis of complex event flows to recognise
  *  in them predetermined searched-for behaviours. These behaviours are defined 
