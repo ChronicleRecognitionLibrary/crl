@@ -130,7 +130,7 @@ namespace CRL
               RecoTree* tmp = new RecoTreeCouple(*itL, *itR);
               tmp->copyDateAndOrder(**itL, **itR);
               tmp->copyProperties(x1x2); 
-              if (hasOutputFunction() != NULL)
+              if (hasOutputFunction() == true)
               {
                 PropertyManager pm;
                 applyOutputFunction(x1x2, pm);
