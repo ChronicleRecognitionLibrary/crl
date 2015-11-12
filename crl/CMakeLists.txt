@@ -29,6 +29,11 @@ MESSAGE (".................... CRL Chronicle Recognition Library Project")
 PROJECT (CRL CXX)
 CMAKE_MINIMUM_REQUIRED (VERSION 2.7)
 
+# ------------------------------ Ensure Linux builds use C++11
+# ------------------------------ MSVC requires no special flags
+if(UNIX)
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=gnu++0x")
+endif()
 
 # ------------------------------ General case : don't use these options
 # ------------------------------ and dates will be defined as double
