@@ -168,7 +168,7 @@ namespace CRL
                   recoLeftToDelete.insert(const_cast<RecoTree*>((*it)->getLeftMember()));
                 tmpNewReco.clear();
 
-                if (hasOutputFunction() != NULL)
+                if (hasOutputFunction() == true)
                 {
                   PropertyManager pm;
                   applyOutputFunction(x1x2, pm);
@@ -179,7 +179,7 @@ namespace CRL
               // Case 2 : i^th recognition at a given instant, which is added to the other recognitions of the same instant
               else if (leftMaxOrder == maxLeftMaxOrder)
               {
-                if (hasOutputFunction() != NULL)
+                if (hasOutputFunction() == true)
                 {
                   PropertyManager pm;
                   applyOutputFunction(x1x2, pm);

@@ -106,7 +106,7 @@ namespace CRL {
     Chronicle()
       : _name(""), _purgeable(true), 
         _alreadyProcessed(false), _hasNewRecognitions(false), _hasOutputPropertiesMethod(false),
-        _myEngine(NULL), _predicateFunction(NULL), _outputFunction(NULL), _actionFunction(NULL), _peremptionDuration(NULL) { }
+        _myEngine(NULL), _predicateFunction(NULL), _outputFunction(NULL), _actionFunction(NULL), _peremptionDuration(0) { }
 
     //! Destructor, virtual since abstract class
     virtual ~Chronicle();
