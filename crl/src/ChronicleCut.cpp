@@ -118,7 +118,7 @@ namespace CRL
 
     if (_opRight->process(d, e))
     {
-      Chronicle::RecoSet::iterator itL, itR;
+      Chronicle::RecoSet::iterator itL, itR, itLtmp;
 
       //the new recognitions of Right are merged with the recognitions of Left
       itL  = _tempRecogSet.begin();
@@ -151,7 +151,11 @@ namespace CRL
         } // for itR
 
         if (flag)
-          itL = _tempRecogSet.erase(itL);
+        {
+          itLtmp = std::next(itL);
+          _tempRecogSet.erase(itL);
+          itL = itLtmp;
+        }
         else
           itL++;
       }
