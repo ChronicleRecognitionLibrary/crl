@@ -129,7 +129,7 @@ namespace CRL
    */
   void Chronicle::purgeOldRecognitions() 
   {
-    if ( _peremptionDuration != NULL )
+    if ( _peremptionDuration >= 0.0 )
     {
       Chronicle::RecoSet::iterator itTmp, it=_recognitionSet.begin();
 

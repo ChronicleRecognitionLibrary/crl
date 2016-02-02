@@ -325,3 +325,34 @@ void testAction()
   testChangeDelay();
   std::cout << std::endl;
 }
+
+#ifdef UNITARY_TEST
+int main() 
+{
+  try
+  {
+    testAction();
+    
+    CRL::CRL_ErrReport::PRINT_ALL();
+
+    return 0;
+  }
+
+  catch(std::string& msg) {                        
+    std::cout << "main : "     
+    << msg << std::endl;
+    return 1;                                      
+  }                                                
+  catch(const char* msg) {                         
+  std::cout << "main : "       
+  << msg << std::endl;
+  return 1;                                        
+  }                                                                                           
+  catch(...) {                                     
+  std::cout << "main : Unknown Exception"
+  << std::endl;
+  return 1;                                        
+  }
+
+}
+#endif

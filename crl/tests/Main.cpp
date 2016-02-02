@@ -90,8 +90,8 @@ int main()
 
     CRL::CRL_ErrReport::PRINT_ALL();
 
-    //char c;
-    //std::cin>>c;
+    char c;
+    std::cin>>c;
     return 0;
   }
 

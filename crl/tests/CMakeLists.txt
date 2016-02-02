@@ -32,6 +32,7 @@ SET  ( CRL_TESTS_DIR   "${CMAKE_SOURCE_DIR}/tests" CACHE PATH "" FORCE )
 FILE ( GLOB CRL_TESTS_HEADERS ${CRL_TESTS_DIR}/*.h   )
 FILE ( GLOB CRL_TESTS_SOURCES ${CRL_TESTS_DIR}/*.cpp )
 
+
 # ------------------------------ Adds these directories to the INCLUDE path
 
 INCLUDE_DIRECTORIES(
@@ -45,18 +46,32 @@ SOURCE_GROUP (include FILES ${CRL_TESTS_HEADERS})
 # ------------------------------ Adds the test files for
 # ------------------------------ teh supplied source files.
 
+set(PRJ_LIST TestAbsence TestAction TestAt TestChronicle TestConjunction TestContext TestCoreferencing TestCut TestDelayAtLeast TestDelayAtMost TestDelayLasts TestDelayThen TestDisjunction TestDuring TestEquals TestEvent TestFinishes TestMeets TestNamed TestOverlaps TestPeremptionDuration TestProperty TestRecognitionEngine TestSequence TestSingleDate TestSingleEvent TestStarts TestStateChange)
+
+foreach (prj ${PRJ_LIST})
+	ADD_EXECUTABLE(CRL_${prj}
+	TestUtils.cpp
+	${prj}.cpp
+	)
+	TARGET_COMPILE_DEFINITIONS(CRL_${prj} PRIVATE UNITARY_TEST=1)
+	TARGET_LINK_LIBRARIES(CRL_${prj}
+	CRL_LIB
+	${CRL_USER_LIBRARY}
+	)
+	ADD_TEST(CRL_${prj}
+	${EXECUTABLE_OUTPUT_PATH}/CRL_${prj}
+	) 
+endforeach (prj in ${PRJ_LIST})
+
 
 ADD_EXECUTABLE(CRL_TESTS
   ${CRL_TESTS_SOURCES}
   ${CRL_TESTS_HEADERS}
 )
 
-
 TARGET_LINK_LIBRARIES(CRL_TESTS
   CRL_LIB
   ${CRL_USER_LIBRARY}
 )
 
-ADD_TEST(CRL
-  ${EXECUTABLE_OUTPUT_PATH}/CRL_TESTS
-) 
+
