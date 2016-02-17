@@ -73,7 +73,9 @@
 namespace CRL 
 {
 
-  /** Destructor, deletes the recognition sets
+  /** Destructor, deletes the recognition sets. The destructor is declared 
+  *   protected to prevent allocation of instance on the stack (allowing
+  *   only allocation on the heap).
   */
   Chronicle::~Chronicle()
   {

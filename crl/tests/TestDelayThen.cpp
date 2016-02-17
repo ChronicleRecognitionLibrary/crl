@@ -66,10 +66,8 @@ void testDelayThen1()
 
   std::cout << std::endl;
 
-  BA3.deepDelete();
-  BA.deepDelete();
-  delete &BA3;
-  delete &BA;
+  BA3.deepDestroy();
+  BA.deepDestroy();
 }
 
 
@@ -102,10 +100,8 @@ void testDelayThen2()
   CRL::testInteger((long)A32.getRecognitionSet().size(),  1, false);
   std::cout << std::endl;
 
-  A5.deepDelete();
-  A32.deepDelete();
-  delete &A5;
-  delete &A32;
+  A5.deepDestroy();
+  A32.deepDestroy();
 }
 
 void testDelayThen3() //allows testing the lookahead
@@ -131,10 +127,8 @@ void testDelayThen3() //allows testing the lookahead
   CRL::testInteger((long)A32.getRecognitionSet().size(),  1, false);
   std::cout << std::endl;
 
-  A5.deepDelete();
-  A32.deepDelete();
-  delete &A5;
-  delete &A32;
+  A5.deepDestroy();
+  A32.deepDestroy();
 }
 
 
@@ -164,10 +158,8 @@ void testDelayThenAbsence() //tests the combination of then with an absence
   CRL::testInteger((long)A5mD.getRecognitionSet().size(), 1, false);
   std::cout << std::endl;
 
-  A5.deepDelete();
-  A5mD.deepDelete();
-  delete &A5;
-  delete &A5mD;
+  A5.deepDestroy();
+  A5mD.deepDestroy();
 }
 
 void testChronicleDelayThen()
@@ -179,6 +171,7 @@ void testChronicleDelayThen()
   testDelayThen2();
   testDelayThen3();
   testDelayThenAbsence();
+  Event::freeAllInstances();
   std::cout << std::endl;
 }
 

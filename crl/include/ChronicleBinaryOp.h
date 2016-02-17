@@ -52,12 +52,11 @@ namespace CRL {
     //! Constructor
     ChronicleBinaryOp(Chronicle* opL, Chronicle* opR);
 
-    //! Calls destructors of sub-chronicles
-    void deepDelete() {
-      _opLeft->deepDelete();
-      _opRight->deepDelete();
-      delete _opLeft;
-      delete _opRight;
+    //! Calls destructors of sub-chronicles, and destructor of this
+    void deepDestroy() {
+      _opLeft->deepDestroy();
+      _opRight->deepDestroy();
+      delete this;
     }
 
     //! Accessor, links to the recognition engine
@@ -103,6 +102,10 @@ namespace CRL {
     //! Returns the date in the future at which the recognitions set of the chronicle must be re-assessed
     DateType lookAhead(const DateType& tcurr) const;
 
+  protected:
+
+    //! Destructor protected (to prevent stack allocation)
+    ~ChronicleBinaryOp() { /* empty */ }
 
   }; // class ChronicleBinaryOp
 

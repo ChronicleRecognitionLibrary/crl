@@ -57,7 +57,7 @@ void testRecognitionEngine_addEvent()
   // Adding a non-dated event to an empty buffer t=0, order=0
   r1.setCurrentTime(0.0);
   Event a("a");
-  r1.addEvent(&a);
+  r1.addEvent(&a, false);
   CRL::testDouble((double)a.getDate(), 0.0, 1e-10, false);
   CRL::testInteger(a.getOrder(), 0L, false);
   CRL::testInteger((long)r1.getEventBuffer().size(), 1L, false);
@@ -155,16 +155,20 @@ void testRecognitionEngine_lookAhead()
   RecognitionEngine r1(&std::cout, RecognitionEngine::DETAILED);
 
   CRL::testDouble((double)r1.lookAhead(), INFTY_DATE, 1e10, false);
-  ChronicleSingleEvent a("a");
+  ChronicleSingleEvent* a = new ChronicleSingleEvent("a");
   r1.addChronicle(a);
   CRL::testDouble((double)r1.lookAhead(), INFTY_DATE, 1e10, false);
-  ChronicleSingleDate b(4.0);
-  ChronicleSingleDate c(2.0);
+  ChronicleSingleDate* b = new ChronicleSingleDate(4.0);
+  ChronicleSingleDate* c = new ChronicleSingleDate(2.0);
   r1.addChronicle(b);
   r1.addChronicle(c);
   CRL::testDouble((double)r1.lookAhead(), 2.0, 1e-10, false);
   r1.clearChronicleList();
   CRL::testDouble((double)r1.lookAhead(), INFTY_DATE, 1e10, false);
+
+  a->destroy();
+  b->destroy();
+  c->destroy();
 }
 
 
@@ -180,12 +184,14 @@ void testRecognitionEngine()
   Chronicle* a = new ChronicleSingleEvent("a");
   r1.addChronicle(a);
   CRL::testInteger((long)r1.getRootChronicles().size(), 1);
-  ChronicleSingleEvent b("b");
+  ChronicleSingleEvent* b = new ChronicleSingleEvent("b");
   r1.addChronicle(b);
   CRL::testInteger((long)r1.getRootChronicles().size(), 2);
   r1.clearChronicleList();
   CRL::testInteger((long)r1.getRootChronicles().size(), 0);
-  delete a;
+
+  a->destroy();
+  b->destroy();
   std::cout << std::endl;
 
   std::cout << "------- Accessors" << std::endl << std::endl;
@@ -210,6 +216,7 @@ void testRecognitionEngine()
 
   testRecognitionEngine_lookAhead();
 
+  Event::freeAllInstances();
   std::cout << std::endl;
 
 }

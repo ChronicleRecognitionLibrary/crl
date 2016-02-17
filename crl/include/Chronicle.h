@@ -108,11 +108,18 @@ namespace CRL {
         _alreadyProcessed(false), _hasNewRecognitions(false), _hasOutputPropertiesMethod(false),
         _myEngine(NULL), _predicateFunction(NULL), _outputFunction(NULL), _actionFunction(NULL), _peremptionDuration(-1.0) { }
 
-    //! Destructor, virtual since abstract class
+  protected:
+
+    //! Destructor, virtual since abstract class, protected to prevent heap allocation
     virtual ~Chronicle();
 
-    //! Deletes sub-chronicles (if any)
-    virtual void deepDelete() { }
+  public:
+
+    //! Calls the destructor
+    void destroy() { delete this; }
+
+    //! Deletes sub-chronicles (if any), and calls the destructor
+    virtual void deepDestroy() { delete this; }
 
     //! Function to be re-defined in the sub-classes
     virtual std::string toString() const = 0;

@@ -70,10 +70,8 @@ void testCoRef()
 
   std::cout << std::endl;
 
-  ABandBDcoref.deepDelete();
-  ABandBD.deepDelete();
-  delete &ABandBDcoref;
-  delete &ABandBD;
+  ABandBDcoref.deepDestroy();
+  ABandBD.deepDestroy();
 }
 
 void testCoRef1()
@@ -103,12 +101,9 @@ void testCoRef1()
 
   std::cout << std::endl;
 
-  BAandCAcoref.deepDelete();
-  BAandCAnocoref.deepDelete();
-  BAandCA.deepDelete();
-  delete &BAandCAcoref;
-  delete &BAandCAnocoref;
-  delete &BAandCA;
+  BAandCAcoref.deepDestroy();
+  BAandCAnocoref.deepDestroy();
+  BAandCA.deepDestroy();
 }
 
 void testCoRef2()
@@ -142,14 +137,10 @@ void testCoRef2()
 
   std::cout << std::endl;
 
-  ABmACcoref.deepDelete();
-  ABmAC.deepDelete();
-  ABmC.deepDelete();
-  ABmACnocoref.deepDelete();
-  delete &ABmACcoref;
-  delete &ABmAC;
-  delete &ABmC;
-  delete &ABmACnocoref;
+  ABmACcoref.deepDestroy();
+  ABmAC.deepDestroy();
+  ABmC.deepDestroy();
+  ABmACnocoref.deepDestroy();
 }
 
 void testCoRef2bis()
@@ -173,10 +164,8 @@ void testCoRef2bis()
 
   std::cout << std::endl;
 
-  ABmACcoref.deepDelete();
-  ABmC.deepDelete();
-  delete &ABmACcoref;
-  delete &ABmC;
+  ABmACcoref.deepDestroy();
+  ABmC.deepDestroy();
 }
 
 void testCoRef2ter()
@@ -197,8 +186,7 @@ void testCoRef2ter()
 
   std::cout << std::endl;
 
-  ABmACcoref.deepDelete();
-  delete &ABmACcoref;
+  ABmACcoref.deepDestroy();
 }
 
 
@@ -213,6 +201,7 @@ void testChronicleCoRef()
   testCoRef2();
   testCoRef2bis();
   testCoRef2ter();
+  Event::freeAllInstances();
   std::cout << std::endl;
 }
 

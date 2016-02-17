@@ -121,14 +121,10 @@ void testSingleEvent1()
 
   std::cout << std::endl;
 
-  A1.deepDelete();
-  A2.deepDelete();
-  A3.deepDelete();
-  A4.deepDelete();
-  delete &A1;
-  delete &A2;
-  delete &A3;
-  delete &A4;
+  A1.deepDestroy();
+  A2.deepDestroy();
+  A3.deepDestroy();
+  A4.deepDestroy();
 }
 
 
@@ -138,6 +134,7 @@ void testSingleEvent()
   std::cout << "##### ------- Tests of ChronicleSingleEvent class"
               << std::endl << std::endl;
   testSingleEvent1();
+  Event::freeAllInstances();
   std::cout << std::endl;
 }
 

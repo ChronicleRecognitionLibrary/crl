@@ -65,10 +65,8 @@ void testSequence1()
 
   std::cout << std::endl;
 
-  AA.deepDelete();
-  AB.deepDelete();
-  delete &AA;
-  delete &AB;
+  AA.deepDestroy();
+  AB.deepDestroy();
 }
 
 
@@ -99,10 +97,8 @@ void testNoDistributivityDisjOverSeq()
 
   std::cout << std::endl;
 
-  c1.deepDelete();
-  c2.deepDelete();
-  delete &c1;
-  delete &c2;
+  c1.deepDestroy();
+  c2.deepDestroy();
 }
 
 
@@ -129,10 +125,8 @@ void testNoDistributivityConjOverSeq()
   
   std::cout << std::endl;
 
-  c1.deepDelete();
-  c2.deepDelete();
-  delete &c1;
-  delete &c2;
+  c1.deepDestroy();
+  c2.deepDestroy();
 }
 
 void testSurplusDeRecoSeq()
@@ -153,8 +147,7 @@ void testSurplusDeRecoSeq()
 
   std::cout << std::endl;
 
-  c1.deepDelete();
-  delete &c1;
+  c1.deepDestroy();
 }
 
 
@@ -187,8 +180,7 @@ void testSequenceWithPredicate()
 
   std::cout << std::endl;
 
-  c1.deepDelete();
-  delete &c1;
+  c1.deepDestroy();
 }
 
 
@@ -202,6 +194,7 @@ void testChronicleSequence()
   testNoDistributivityConjOverSeq();
   testSurplusDeRecoSeq();
   testSequenceWithPredicate();
+  Event::freeAllInstances();
   std::cout << std::endl;
 }
 

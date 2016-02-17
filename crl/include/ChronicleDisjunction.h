@@ -55,6 +55,10 @@ namespace CRL {
     //! Display function for unit tests
     std::string toString() const;
 
+  protected:
+
+    //! Destructor protected (to prevent stack allocation)
+    ~ChronicleDisjunction() { /* empty */ }
 
   }; // class ChronicleDisjunction
 

@@ -62,10 +62,8 @@ void testEquals1()
 
   std::cout << std::endl;
 
-  AA.deepDelete();
-  C1.deepDelete();
-  delete &AA;
-  delete &C1;
+  AA.deepDestroy();
+  C1.deepDestroy();
 }
 
 bool testEqualsWithPredicate_pred(const PropertyManager& p)
@@ -122,10 +120,8 @@ void testEqualsWithPredicate()
 
   std::cout << std::endl;
 
-  ACBeqADB.deepDelete();
-  ACBeqADBbis.deepDelete();
-  delete &ACBeqADB;
-  delete &ACBeqADBbis;
+  ACBeqADB.deepDestroy();
+  ACBeqADBbis.deepDestroy();
 }
 
 void testChronicleEquals()
@@ -135,6 +131,7 @@ void testChronicleEquals()
               << std::endl << std::endl;
   testEquals1();
   testEqualsWithPredicate();
+  Event::freeAllInstances();
   std::cout << std::endl;
 }
 

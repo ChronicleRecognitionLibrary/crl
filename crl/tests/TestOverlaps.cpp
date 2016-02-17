@@ -66,8 +66,7 @@ void testOverlaps1()
 
   std::cout << std::endl;
 
-  ABovCD.deepDelete();
-  delete &ABovCD;
+  ABovCD.deepDestroy();
 }
 
 bool testOverlapsWithPredicate_pred(const PropertyManager& p)
@@ -120,8 +119,7 @@ void testOverlapsWithPredicate()
 
   std::cout << std::endl;
 
-  ABovCD.deepDelete();
-  delete &ABovCD;
+  ABovCD.deepDestroy();
 }
 
 
@@ -132,6 +130,7 @@ void testChronicleOverlaps()
               << std::endl << std::endl;
   testOverlaps1();
   testOverlapsWithPredicate();
+  Event::freeAllInstances();
   std::cout << std::endl;
 }
 

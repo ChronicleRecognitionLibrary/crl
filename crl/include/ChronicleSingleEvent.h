@@ -75,6 +75,10 @@ namespace CRL {
     //! Returns the date in the future at which the recognitions set of the chronicle must be re-assessed
     DateType lookAhead(const DateType& tcurr) const { return INFTY_DATE; }
 
+  protected:
+
+    //! Destructor protected (to prevent stack allocation)
+    ~ChronicleSingleEvent() { /* empty */ }
 
   }; // class ChronicleSingleEvent
 

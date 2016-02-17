@@ -69,10 +69,8 @@ void testDelayAtMost1()
 
   std::cout << std::endl;
 
-  BA3.deepDelete();
-  BA.deepDelete();
-  delete &BA3;
-  delete &BA;
+  BA3.deepDestroy();
+  BA.deepDestroy();
 }
 
 
@@ -82,6 +80,7 @@ void testChronicleDelayAtMost()
   std::cout << "##### ------- Tests of ChronicleDelayAtMost class"
               << std::endl << std::endl ;
   testDelayAtMost1();
+  Event::freeAllInstances();
   std::cout << std::endl;
 }
 

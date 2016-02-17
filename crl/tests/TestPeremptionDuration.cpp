@@ -64,8 +64,7 @@ void testPeremptionDurationSequenceSimple()
 
   std::cout << std::endl;
 
-  AAwindow.deepDelete();
-  delete &AAwindow;
+  AAwindow.deepDestroy();
 }
 
 void testPeremptionDurationSequence()
@@ -116,10 +115,8 @@ void testPeremptionDurationSequence()
 
   std::cout << std::endl;
 
-  AA.deepDelete();
-  AB.deepDelete();
-  delete &AA;
-  delete &AB;
+  AA.deepDestroy();
+  AB.deepDestroy();
 }
 
 
@@ -162,8 +159,7 @@ void testPeremptionDurationSequenceWithPredicate()
 
   std::cout << std::endl;
 
-  c1.deepDelete();
-  delete &c1;
+  c1.deepDestroy();
 }
 
 
@@ -198,8 +194,7 @@ void testPeremptionDurationMultipleSequence()
 
   std::cout << std::endl;
 
-  ABC.deepDelete();
-  delete &ABC;
+  ABC.deepDestroy();
 }
 
 void testPeremptionDurationMultipleSequenceNoRec()
@@ -233,8 +228,7 @@ void testPeremptionDurationMultipleSequenceNoRec()
 
   std::cout << std::endl;
 
-  ABC.deepDelete();
-  delete &ABC;
+  ABC.deepDestroy();
 }
 
 void testPeremptionDurationMultipleSequenceTwoLevelsNoRec()
@@ -270,8 +264,7 @@ void testPeremptionDurationMultipleSequenceTwoLevelsNoRec()
 
   std::cout << std::endl;
 
-  ABC.deepDelete();
-  delete &ABC;
+  ABC.deepDestroy();
 }
 
 void testPeremptionDurationMultipleSequenceActivateForget()
@@ -304,8 +297,7 @@ void testPeremptionDurationMultipleSequenceActivateForget()
 
   std::cout << std::endl;
 
-  ABC.deepDelete();
-  delete &ABC;
+  ABC.deepDestroy();
 }
 
 void testPeremptionDurationDelayThenInf()
@@ -332,8 +324,7 @@ void testPeremptionDurationDelayThenInf()
 
   std::cout << std::endl;
 
-  BA3.deepDelete();
-  delete &BA3;
+  BA3.deepDestroy();
 }
 
 void testPeremptionDurationDelayThenSup()
@@ -368,8 +359,7 @@ void testPeremptionDurationDelayThenSup()
 
   std::cout << std::endl;
 
-  BA3.deepDelete();
-  delete &BA3;
+  BA3.deepDestroy();
 }
 
 
@@ -404,10 +394,8 @@ void testPartlyPeremptionDuration()
 
   std::cout << std::endl;
 
-  AAwindow.deepDelete();
-  AB.deepDelete();
-  delete &AAwindow;
-  delete &AB;
+  AAwindow.deepDestroy();
+  AB.deepDestroy();
 }
 
 void testPeremptionDuration()
@@ -425,6 +413,7 @@ void testPeremptionDuration()
   testPeremptionDurationDelayThenInf();
   testPeremptionDurationDelayThenSup();
   testPartlyPeremptionDuration();
+  Event::freeAllInstances();
   std::cout << std::endl;
 }
 

@@ -26,6 +26,7 @@
 // INCLUDE FILES
 // ----------------------------------------------------------------------------
 
+#include "Event.h"
 #include "Context.h"
 #include "TestUtils.h"
 
@@ -211,6 +212,7 @@ void testContext()
 
   testContext1();
   testContext2();
+  Event::freeAllInstances();
 }
 
 

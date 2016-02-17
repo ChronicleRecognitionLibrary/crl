@@ -65,10 +65,8 @@ void testMeets1()
 
   std::cout << std::endl;
 
-  AmA.deepDelete();
-  AmB.deepDelete();
-  delete &AmA;
-  delete &AmB;
+  AmA.deepDestroy();
+  AmB.deepDestroy();
 }
 
 
@@ -97,10 +95,8 @@ void testMeets2()
 
   std::cout << std::endl;
 
-  ABmBC.deepDelete();
-  ABmDC.deepDelete();
-  delete &ABmBC;
-  delete &ABmDC;
+  ABmBC.deepDestroy();
+  ABmDC.deepDestroy();
 }
 
 bool testMeetsWithPredicate_pred(const PropertyManager& p)
@@ -137,8 +133,7 @@ void testMeetsWithPredicate()
 
   std::cout << std::endl;
 
-  ABmBC.deepDelete();
-  delete &ABmBC;
+  ABmBC.deepDestroy();
 }
 
 void testChronicleMeets()
@@ -149,6 +144,7 @@ void testChronicleMeets()
   testMeets1();
   testMeets2();
   testMeetsWithPredicate();
+  Event::freeAllInstances();
   std::cout << std::endl;
 }
 

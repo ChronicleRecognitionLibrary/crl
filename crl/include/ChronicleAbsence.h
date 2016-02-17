@@ -71,6 +71,11 @@ namespace CRL {
     //! Display function for unit tests
     std::string toString() const;
 
+  protected:
+
+    //! Destructor protected (to prevent stack allocation)
+    ~ChronicleAbsence() { /* empty */ }
+
   }; // class ChronicleAbsence
 
 } /* namespace CRL */

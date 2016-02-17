@@ -31,6 +31,7 @@
 
 #include <list>
 #include <iostream>
+#include <utility>
 
 #include "Event.h"
 #include "Chronicle.h"
@@ -49,13 +50,16 @@ namespace CRL {
     //! Internal type : level of verbosity in the output flow (log)
     enum VerbosityLevel { SILENT=0, WARNING=1, VERBOSE=2, DETAILED=3 };
 
+    //! Data type: pair of event and boolean indicating if the engine should delete the event
+    typedef std::pair<CRL::Event*,bool> EventStored;
+
   protected:
 
     //! Chronicles to be recognised
     std::list<CRL::Chronicle*> _rootChronicles;
 
     //! Input event buffer
-    std::list<CRL::Event*> _eventBuffer;
+    std::list<EventStored> _eventBuffer;
 
     //! Current time
     DateType _currentTime;
@@ -83,6 +87,9 @@ namespace CRL {
     //! Constructor with an output flow for logs
     RecognitionEngine(std::ostream* out, VerbosityLevel lvl = WARNING);
 
+    //! Destructor: deletes only the events created by the engine itself
+    ~RecognitionEngine();
+
     //! Adds a chronicle in the list of the chronicles to be recognised (#_rootChronicles)
     void addChronicle(CRL::Chronicle *cr);
 
@@ -93,10 +100,10 @@ namespace CRL {
     void clearChronicleList();
 
     //! Adds an event to the buffer, handles its date and order
-    void addEvent(CRL::Event* e);
+    void addEvent(CRL::Event* e, bool toDelete); //toDelete = false
 
     //! Adds an event to the buffer, handles its date and order
-    void addEvent(CRL::Event& e);
+    void addEvent(CRL::Event& e, bool toDelete);
 
     //! Adds an event named \a name to the input buffer
     RecognitionEngine& operator<<(const char* name);
@@ -120,10 +127,10 @@ namespace CRL {
     int process(const DateType& date = INFTY_DATE);
 
     //! Inserts an event and updates the recognition sets
-    int process(CRL::Event *e);
+    //int process(CRL::Event *e);
 
     //! Inserts an event and updates the recognition sets
-    int process(CRL::Event &e);
+    //int process(CRL::Event &e);
 
     //! Returns the minimal date up to which the engine can go forward
     DateType lookAhead() const;
@@ -132,7 +139,7 @@ namespace CRL {
     const std::list<CRL::Chronicle*>& getRootChronicles() const { return _rootChronicles; }
 
     //! Accessor, returns the event input buffer
-    const std::list<CRL::Event*>& getEventBuffer() const { return _eventBuffer; }
+    const std::list<EventStored>& getEventBuffer() const { return _eventBuffer; }
 
     //! Accessor, returns the order the last event processed
     long getCurrentOrder() const { return _currentOrder; }
@@ -180,7 +187,7 @@ namespace CRL {
     void setPurgeOldRecognitions(bool  purgeOldRecognitions) { _purgeOldRecognitions = purgeOldRecognitions; }
 
     //! Displays a list of events as a string
-    static std::string eventListToString(const std::list<Event*> &s);
+    static std::string eventListToString(const std::list<EventStored> &s);
 
     //! Displays the contents of the recognition engine input buffer
     std::string eventBufferToString() const;
@@ -192,10 +199,13 @@ namespace CRL {
     friend RecognitionEngine& operator<<(RecognitionEngine& engine, 
                                          void (*f)(RecognitionEngine&));
 
-  protected:
-
     //! Processes an event at a given time, and updates the recognition sets
     void processEvent(const DateType& date, CRL::Event *e = NULL);
+
+  protected:
+
+    //! Removes an event from the buffer
+    void removeEvent(CRL::Event* e);
 
     //! Empties list Chronicle::_newRecognitions of all the chronicles
     void purgeNewRecognitions();

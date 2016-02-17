@@ -77,6 +77,7 @@ void testChronicle()
   CRL::testBoolean(tc1.isIn(*r1, tc1.getRecognitionSet()), true);
   CRL::testBoolean(tc1.isIn(*r2, tc1.getRecognitionSet()), true);
 
+  Event::freeAllInstances();
   std::cout << std::endl;
 }
 

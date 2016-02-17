@@ -114,12 +114,9 @@ void testNamed1()
 
   std::cout << std::endl;
 
-  A1.deepDelete();
-  A2.deepDelete();
-  A3.deepDelete();
-  delete &A1;
-  delete &A2;
-  delete &A3;
+  A1.deepDestroy();
+  A2.deepDestroy();
+  A3.deepDestroy();
 }
 
 
@@ -129,6 +126,7 @@ void testNamed()
   std::cout << "##### ------- Tests of ChronicleNamed class"
               << std::endl << std::endl;
   testNamed1();
+  Event::freeAllInstances();
   std::cout << std::endl;
 }
 

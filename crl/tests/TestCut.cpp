@@ -69,10 +69,8 @@ void testCut0()
 
   std::cout << std::endl;
 
-  AcutA.deepDelete();
-  AcutB.deepDelete();
-  delete &AcutA;
-  delete &AcutB;
+  AcutA.deepDestroy();
+  AcutB.deepDestroy();
 }
 
 
@@ -98,8 +96,7 @@ void testCutFirstToFinish()
 
   std::cout << std::endl;
 
-  AcutBD.deepDelete();
-  delete &AcutBD;
+  AcutBD.deepDestroy();
 }
 
 void testCutSeveral()
@@ -127,8 +124,7 @@ void testCutSeveral()
 
   std::cout << std::endl;
 
-  AcutBDE.deepDelete();
-  delete &AcutBDE;
+  AcutBDE.deepDestroy();
 }
 
 void testCut1()
@@ -155,10 +151,8 @@ void testCut1()
 
   std::cout << std::endl;
 
-  AcutBC.deepDelete();
-  ABC.deepDelete();
-  delete &AcutBC;
-  delete &ABC;
+  AcutBC.deepDestroy();
+  ABC.deepDestroy();
 }
 
 void testCut2()
@@ -183,8 +177,7 @@ void testCut2()
 
   std::cout << std::endl;
 
-  T0cutAB.deepDelete();
-  delete &T0cutAB;
+  T0cutAB.deepDestroy();
 }
 
 void testCut2bis()
@@ -212,8 +205,7 @@ void testCut2bis()
 
   std::cout << std::endl;
 
-  T0cutAB.deepDelete();
-  delete &T0cutAB;
+  T0cutAB.deepDestroy();
 }
 
 
@@ -228,6 +220,7 @@ void testChronicleCut()
   testCut1();
   testCut2();
   testCut2bis();
+  Event::freeAllInstances();
   std::cout << std::endl;
 }
 

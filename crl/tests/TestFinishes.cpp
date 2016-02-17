@@ -66,10 +66,8 @@ void testFinishes1()
 
   std::cout << std::endl;
 
-  BAB.deepDelete();
-  BCAC.deepDelete();
-  delete &BAB;
-  delete &BCAC;
+  BAB.deepDestroy();
+  BCAC.deepDestroy();
 }
 
 bool testFinishesWithPredicate_pred(const PropertyManager& p)
@@ -119,8 +117,7 @@ void testFinishesWithPredicate()
 
   std::cout << std::endl;
 
-  BCAC.deepDelete();
-  delete &BCAC;
+  BCAC.deepDestroy();
 }
 
 
@@ -131,6 +128,7 @@ void testChronicleFinishes()
               << std::endl << std::endl;
   testFinishes1();
   testFinishesWithPredicate();
+  Event::freeAllInstances();
   std::cout << std::endl;
 }
 

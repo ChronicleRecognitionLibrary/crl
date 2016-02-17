@@ -57,6 +57,7 @@ using namespace CRL;
     CRL::testString(a.getName().c_str(), "AA");
 
     std::cout << std::endl;
+    Event::freeAllInstances();
   }
 
 

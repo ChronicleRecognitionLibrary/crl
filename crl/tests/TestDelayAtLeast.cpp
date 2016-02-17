@@ -65,10 +65,8 @@ void testDelayAtLeast1()
 
   std::cout << std::endl;
 
-  BA3.deepDelete();
-  BA.deepDelete();
-  delete &BA3;
-  delete &BA;
+  BA3.deepDestroy();
+  BA.deepDestroy();
 }
 
 
@@ -108,8 +106,7 @@ void testDelayAtLeastWithPredicate()
 
   std::cout << std::endl;
 
-  BA3.deepDelete();
-  delete &BA3;
+  BA3.deepDestroy();
 }
 
 
@@ -120,6 +117,7 @@ void testChronicleDelayAtLeast(){
               << std::endl << std::endl ;
   testDelayAtLeast1();
   testDelayAtLeastWithPredicate();
+  Event::freeAllInstances();
   std::cout << std::endl;
 }
 

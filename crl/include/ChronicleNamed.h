@@ -57,10 +57,10 @@ namespace CRL {
     //! Constructor
     ChronicleNamed(Chronicle& chr, const std::string& name);
 
-    //! Calls destructor of sub-chronicle
-    void deepDelete() {
-      _myChronicle->deepDelete();
-      delete _myChronicle;
+    //! Calls destructor of sub-chronicle, and destructor of this
+    void deepDestroy() {
+      _myChronicle->deepDestroy();
+      delete this;
     }
 
     //! Accessor, links to the recognition engine
@@ -90,6 +90,10 @@ namespace CRL {
     //! Returns the date in the future at which the recognitions set of the chronicle must be re-assessed
     DateType lookAhead(const DateType& tcurr) const ;
 
+  protected:
+
+    //! Destructor protected (to prevent stack allocation)
+    ~ChronicleNamed() { /* empty */ }
 
   }; // class ChronicleNamed
 

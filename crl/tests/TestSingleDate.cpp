@@ -58,8 +58,7 @@ void testSingleDate0PromptedByTimeEvent()
 
   std::cout << std::endl;
 
-  T0.deepDelete();
-  delete &T0;
+  T0.deepDestroy();
 }
 
 void testSingleDate0PromptedByEvent()
@@ -76,15 +75,15 @@ void testSingleDate0PromptedByEvent()
   Event a("A");
   a.setDate(0.0);
 
-  engine.process(a);
+  engine.addEvent(a, false);
+  engine.processEvent(a.getDate(), &a);
   CRL::testInteger((long)T0.getRecognitionSet().size(), 1, false);
   engine.process(1.0);
   CRL::testInteger((long)T0.getRecognitionSet().size(), 1, false);
 
   std::cout << std::endl;
 
-  T0.deepDelete();
-  delete &T0;
+  T0.deepDestroy();
 }
 
 void testSingleDate0PromptedByLookAhead()
@@ -103,8 +102,7 @@ void testSingleDate0PromptedByLookAhead()
 
   std::cout << std::endl;
 
-  T0.deepDelete();
-  delete &T0;
+  T0.deepDestroy();
 }
 
 void testSingleDatePromptedByLookAhead()
@@ -125,8 +123,7 @@ void testSingleDatePromptedByLookAhead()
 
   std::cout << std::endl;
 
-  T5.deepDelete();
-  delete &T5;
+  T5.deepDestroy();
 }
 
 void testSingleDatePromptedByEvent()
@@ -153,8 +150,7 @@ void testSingleDatePromptedByEvent()
 
   std::cout << std::endl;
 
-  T5.deepDelete();
-  delete &T5;
+  T5.deepDestroy();
 }
 
 void testSingleDatePromptedByTimeEvent()
@@ -178,8 +174,7 @@ void testSingleDatePromptedByTimeEvent()
 
   std::cout << std::endl;
 
-  T5.deepDelete();
-  delete &T5;
+  T5.deepDestroy();
 }
 
 
@@ -194,6 +189,7 @@ void testSingleDate()
   testSingleDatePromptedByLookAhead();
   testSingleDatePromptedByEvent();
   testSingleDatePromptedByTimeEvent();
+  Event::freeAllInstances();
   std::cout << std::endl;
 }
 

@@ -67,10 +67,8 @@ void testAt1()
 
   std::cout << std::endl;
 
-  atA.deepDelete();
-  atAandB.deepDelete();
-  delete &atA;
-  delete &atAandB;
+  atA.deepDestroy();
+  atAandB.deepDestroy();
 }
 
 bool testAt2_pred(const PropertyManager& p)
@@ -158,10 +156,8 @@ void testAtPredFunct()
 
   std::cout << std::endl;
 
-  A2.deepDelete();
-  A4.deepDelete();
-  delete &A2;
-  delete &A4;
+  A2.deepDestroy();
+  A4.deepDestroy();
 }
 
 void testAtThen()
@@ -180,24 +176,24 @@ void testAtThen()
 
   engine << 0.0 << 1.0  << "A" << flush;
   engine << 3.0  << "A" << flush;
+  //engine << 5.0  << "E" << flush;
   engine << 6.0  << "C" << flush;
   engine << 8.0  << "A" << flush;
   engine << 10.0 << "A" << flush;
-  CRL::testInteger((long)C1.getRecognitionSet().size(), 0, false);
+  CRL::testInteger((long)C1.getRecognitionSet().size(), 0, true);
 
   engine << 13.0 << "D" << flush;
-  CRL::testInteger((long)C1.getRecognitionSet().size(), 2, false);
+  CRL::testInteger((long)C1.getRecognitionSet().size(), 2, true);
 
   std::cout << std::endl;
 
-  C1.deepDelete();
-  delete &C1;
+  C1.deepDestroy();
 }
 
 void testAtThenBis()
 {
   // Events leading to recognitions of A then 4
-  std::cout << "------- Tests with chronicle C @(A then 4) D" 
+  std::cout << "------- Tests with chronicle C @(A then 4) D (BIS)" 
               << std::endl << std::endl;
 
   RecognitionEngine engine(&std::cout, RecognitionEngine::VERBOSE);
@@ -215,15 +211,13 @@ void testAtThenBis()
   engine << 8.0  << "A" << flush;
   engine << 10.0 << "A" << flush;
   engine << 12.0 << "E" << flush;
-  CRL::testInteger((long)C1.getRecognitionSet().size(), 0, false);
-
+  CRL::testInteger((long)C1.getRecognitionSet().size(), 0, true);
   engine << 13.0 << "D" << flush;
-  CRL::testInteger((long)C1.getRecognitionSet().size(), 2, false);
+  CRL::testInteger((long)C1.getRecognitionSet().size(), 2, true);
 
   std::cout << std::endl;
 
-  C1.deepDelete();
-  delete &C1;
+  C1.deepDestroy();
 }
 
 void testChronicleAt()
@@ -235,6 +229,7 @@ void testChronicleAt()
   testAtPredFunct();
   testAtThen();
   testAtThenBis();
+  Event::freeAllInstances();
   std::cout << std::endl;
 }
 

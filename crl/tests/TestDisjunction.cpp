@@ -66,12 +66,9 @@ void testDisjunction1()
   CRL::testInteger((long)BorA.getRecognitionSet().size(), 3, false);
   std::cout << std::endl;
 
-  AorB.deepDelete();
-  AorA.deepDelete();
-  BorA.deepDelete();
-  delete &AorB;
-  delete &AorA;
-  delete &BorA;
+  AorB.deepDestroy();
+  AorA.deepDestroy();
+  BorA.deepDestroy();
 }
 
 void testDisjunction2()
@@ -96,11 +93,8 @@ void testDisjunction2()
   CRL::testInteger((long)c2.getRecognitionSet().size(), 3, false);
   std::cout << std::endl;
 
-  c1.deepDelete();
-  c2.deepDelete();
-  //delete &a;
-  delete &c1;
-  delete &c2;
+  c1.deepDestroy();
+  c2.deepDestroy();
 }
 
 
@@ -131,10 +125,8 @@ void testAssocativityDisjunction(){
  
   std::cout << std::endl;
 
-  c1.deepDelete();
-  c2.deepDelete();
-  delete &c1;
-  delete &c2;
+  c1.deepDestroy();
+  c2.deepDestroy();
 }
 
 
@@ -167,10 +159,8 @@ void testDistributivitySeqOverDisj()
 
   std::cout << std::endl;
 
-  c1.deepDelete();
-  c2.deepDelete();
-  delete &c1;
-  delete &c2;
+  c1.deepDestroy();
+  c2.deepDestroy();
 }
 
 
@@ -199,10 +189,8 @@ void testDistributivityConjOverDisj()
 
   std::cout << std::endl;
 
-  c1.deepDelete();
-  c2.deepDelete();
-  delete &c1;
-  delete &c2;
+  c1.deepDestroy();
+  c2.deepDestroy();
 }
 
 
@@ -241,8 +229,7 @@ void testDisjunctionWithPredicate()
 
   std::cout << std::endl;
 
-  c1.deepDelete();
-  delete &c1;
+  c1.deepDestroy();
 }
 
 int flagL = 0;
@@ -295,8 +282,7 @@ void testDisjAction()
 
   std::cout << std::endl;
 
-  c1.deepDelete();
-  delete &c1;
+  c1.deepDestroy();
 }
 
 void testChronicleDisjunction()
@@ -310,6 +296,7 @@ void testChronicleDisjunction()
   testDistributivitySeqOverDisj();
   testDisjunctionWithPredicate();
   testDisjAction();
+  Event::freeAllInstances();
   std::cout << std::endl;
 }
 

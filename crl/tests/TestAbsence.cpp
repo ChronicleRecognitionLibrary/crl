@@ -93,12 +93,9 @@ void testAbsence1()
 
   std::cout << std::endl;
 
-  ABmA.deepDelete();
-  ABmB.deepDelete();
-  ABmC.deepDelete();
-  delete &ABmA;
-  delete &ABmB;
-  delete &ABmC;
+  ABmA.deepDestroy();
+  ABmB.deepDestroy();
+  ABmC.deepDestroy();
 }
 
 
@@ -124,8 +121,7 @@ void testAbsence2()
 
   std::cout << std::endl;
 
-  ABCDE.deepDelete();
-  delete &ABCDE;
+  ABCDE.deepDestroy();
 }
 
 
@@ -152,8 +148,7 @@ void testAbsenceDisj()
 
   std::cout << std::endl;
 
-  c1.deepDelete();
-  delete &c1;
+  c1.deepDestroy();
 }
 
 
@@ -178,8 +173,7 @@ void testAbsenceConj()
 
   std::cout << std::endl;
 
-  c1.deepDelete();
-  delete &c1;
+  c1.deepDestroy();
 }
 
 
@@ -205,8 +199,7 @@ void testAbsenceSeq()
 
   std::cout << std::endl;
 
-  c1.deepDelete();
-  delete &c1;
+  c1.deepDestroy();
 }
 
 
@@ -226,8 +219,7 @@ void testDoubleAbsence()
 
   std::cout << std::endl;
 
-  c1.deepDelete();
-  delete &c1;
+  c1.deepDestroy();
 }
 
 
@@ -276,8 +268,7 @@ void testAbsenceWithPredicate()
 
   std::cout << std::endl;
 
-  c2.deepDelete();
-  delete &c2;
+  c2.deepDestroy();
 }
 
 void testBornesAbsence()
@@ -300,8 +291,7 @@ void testBornesAbsence()
 
   std::cout << std::endl;
 
-  c1.deepDelete();
-  delete &c1;
+  c1.deepDestroy();
 }
 
 
@@ -318,6 +308,7 @@ void testChronicleAbsence()
   testDoubleAbsence();
   testAbsenceWithPredicate();
   testBornesAbsence();
+  Event::freeAllInstances();
   std::cout << std::endl;
 }
 

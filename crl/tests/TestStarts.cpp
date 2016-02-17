@@ -70,10 +70,8 @@ void testStarts1()
 
   std::cout << std::endl;
 
-  AAB.deepDelete();
-  ABAC.deepDelete();
-  delete &AAB;
-  delete &ABAC;
+  AAB.deepDestroy();
+  ABAC.deepDestroy();
 }
 
 bool testStartsWithPredicate_pred(const PropertyManager& p)
@@ -113,8 +111,7 @@ void testStartsWithPredicate()
 
   std::cout << std::endl;
 
-  ABAC.deepDelete();
-  delete &ABAC;
+  ABAC.deepDestroy();
 }
 
 
@@ -125,6 +122,7 @@ void testChronicleStarts()
               << std::endl << std::endl;
   testStarts1();
   testStartsWithPredicate();
+  Event::freeAllInstances();
   std::cout << std::endl;
 }
 

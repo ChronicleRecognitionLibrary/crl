@@ -73,10 +73,8 @@ void testStateChange0()
 
   std::cout << std::endl;
 
-  AdcutA.deepDelete();
-  AdcutB.deepDelete();
-  delete &AdcutA;
-  delete &AdcutB;
+  AdcutA.deepDestroy();
+  AdcutB.deepDestroy();
 }
 
 void testStateChangeFirstToFinish()
@@ -98,8 +96,7 @@ void testStateChangeFirstToFinish()
 
   std::cout << std::endl;
 
-  EFdcutBD.deepDelete();
-  delete &EFdcutBD;
+  EFdcutBD.deepDestroy();
 }
 
 void testStateChangeSeveral()
@@ -124,8 +121,7 @@ void testStateChangeSeveral()
 
   std::cout << std::endl;
 
-  FGdcutBDE.deepDelete();
-  delete &FGdcutBDE;
+  FGdcutBDE.deepDestroy();
 }
 
 
@@ -151,8 +147,7 @@ void testStateChangeSeveral2()
 
   std::cout << std::endl;
 
-  FGdcutBDE.deepDelete();
-  delete &FGdcutBDE;
+  FGdcutBDE.deepDestroy();
 }
 
 
@@ -196,8 +191,7 @@ void testStateChangePredicate()
 
   std::cout << std::endl;
 
-  ABdcutD.deepDelete();
-  delete &ABdcutD;
+  ABdcutD.deepDestroy();
 }
 
 void testStateChangePredicate2()
@@ -229,8 +223,7 @@ void testStateChangePredicate2()
 
   std::cout << std::endl;
 
-  ABdcutD.deepDelete();
-  delete &ABdcutD;
+  ABdcutD.deepDestroy();
 }
 
 
@@ -246,6 +239,7 @@ void testChronicleStateChange()
   testStateChangeSeveral2();
   testStateChangePredicate();
   testStateChangePredicate2();
+  Event::freeAllInstances();
   std::cout << std::endl;
 }
 

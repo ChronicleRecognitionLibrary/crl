@@ -29,6 +29,7 @@
 // INCLUDE FILES
 // ----------------------------------------------------------------------------
 
+#include <set>
 #include <string>
 #include <iostream>
 
@@ -87,6 +88,9 @@ namespace CRL {
     //! Order (once in the recognition engine buffer)
     long _order;
 
+    //! Set of instances allocated on the heap (dynamic allocation)
+    static std::set<Event*> _dynamicInstances;
+
   public:
 
     //! Constructor (actual event of the event flow)
@@ -97,6 +101,21 @@ namespace CRL {
 
     //! Constructor (event of type "pure date")
     Event(const DateType& date);
+
+    //! Operator new, stores the instance in the dynamic list of instances
+    void* operator new(size_t size);
+
+    //! Operator delete, removes the instance from the list
+    void operator delete(void* ptr);
+
+    //! Operator new[] is forbidden
+    void* operator new[](size_t size);
+
+    //! Operator delete[] is forbidden
+    void operator delete[](void* ptr);
+
+    //! Deletes every dynamic instances of Event class
+    static void freeAllInstances();
 
     //! Accessor
     static const std::string& getTimeEventName() { return _timeEventName; }

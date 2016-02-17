@@ -26,9 +26,12 @@
 // INCLUDE FILES
 // ----------------------------------------------------------------------------
 
+#include "Event.h"
 #include "TestUtils.h"
 #include "Property.h"
 #include "PropertyManager.h"
+
+using namespace CRL;
 
 
 // ----------------------------------------------------------------------------
@@ -105,6 +108,7 @@ void testProperty()
   try{ std::cout << (bool)m1["a"]["b"] << std::endl; } catch(...) { count++; }
   CRL::testInteger(count, 2);
   
+  Event::freeAllInstances();
   std::cout << std::endl;
 }
 

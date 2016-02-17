@@ -53,10 +53,10 @@ namespace CRL {
     //! Constructor
     ChronicleDelayOp(Chronicle* opL, const DurationType& d);
 
-    //! Calls destructor of sub-chronicle
-    void deepDelete() {
-      _opLeft->deepDelete();
-      delete _opLeft;
+    //! Calls destructor of sub-chronicle, and destructor of this
+    void deepDestroy() {
+      _opLeft->deepDestroy();
+      delete this;
     }
 
     //! Accessor, links to the recognition engine
@@ -99,6 +99,11 @@ namespace CRL {
     DateType lookAhead(const DateType& tcurr) const {
       return _opLeft->lookAhead(tcurr);
     }
+
+  protected:
+
+    //! Destructor protected (to prevent stack allocation)
+    ~ChronicleDelayOp() { /* empty */ }
 
   }; // class ChronicleDelayOp
 

@@ -61,12 +61,9 @@ void testConjunction1()
   CRL::testInteger((long)BandA.getRecognitionSet().size(), 2, false);
   std::cout << std::endl;
 
-  AandB.deepDelete();
-  AandA.deepDelete();
-  BandA.deepDelete();
-  delete &AandB;
-  delete &AandA;
-  delete &BandA;
+  AandB.deepDestroy();
+  AandA.deepDestroy();
+  BandA.deepDestroy();
 }
 
 
@@ -95,10 +92,8 @@ void testConjunction2()
 
   std::cout << std::endl;
 
-  ABandBD.deepDelete();
-  ABBDorBDAB.deepDelete();
-  delete &ABandBD;
-  delete &ABBDorBDAB;
+  ABandBD.deepDestroy();
+  ABBDorBDAB.deepDestroy();
 }
 
 
@@ -127,10 +122,8 @@ void testAssociativityConjunction()
   
   std::cout << std::endl;
 
-  c1.deepDelete();
-  c2.deepDelete();
-  delete &c1;
-  delete &c2;
+  c1.deepDestroy();
+  c2.deepDestroy();
 }
 
 
@@ -155,10 +148,8 @@ void testNoDistributivityDisjOverConj()
 
   std::cout << std::endl;
 
-  c1.deepDelete();
-  c2.deepDelete();
-  delete &c1;
-  delete &c2;
+  c1.deepDestroy();
+  c2.deepDestroy();
 }
 
 
@@ -183,10 +174,8 @@ void testNoDistributivitySeqOverConj()
   
   std::cout << std::endl;
 
-  c1.deepDelete();
-  c2.deepDelete();
-  delete &c1;
-  delete &c2;
+  c1.deepDestroy();
+  c2.deepDestroy();
 }
 
 
@@ -204,8 +193,7 @@ void testChronicleSequenceConjunction()
 
   std::cout << std::endl;
 
-  c1.deepDelete();
-  delete &c1;
+  c1.deepDestroy();
 }
 
 
@@ -242,8 +230,7 @@ void testConjunctionWithPredicate()
 
   std::cout << std::endl;
 
-  c1.deepDelete();
-  delete &c1;
+  c1.deepDestroy();
 }
 
 
@@ -259,6 +246,7 @@ void testChronicleConjunction()
   testNoDistributivitySeqOverConj();
   testChronicleSequenceConjunction();
   testConjunctionWithPredicate();
+  Event::freeAllInstances();
   std::cout << std::endl;
 }
 

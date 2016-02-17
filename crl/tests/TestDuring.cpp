@@ -67,8 +67,7 @@ void testDuring1()
 
   std::cout << std::endl;
 
-  ABdCD.deepDelete();
-  delete &ABdCD;
+  ABdCD.deepDestroy();
 }
 
 bool testDuringWithPredicate_pred(const PropertyManager& p)
@@ -120,8 +119,7 @@ void testDuringWithPredicate()
 
   std::cout << std::endl;
 
-  ABdCD.deepDelete();
-  delete &ABdCD;
+  ABdCD.deepDestroy();
 }
 
 
@@ -132,6 +130,7 @@ void testChronicleDuring()
               << std::endl << std::endl;
   testDuring1();
   testDuringWithPredicate();
+  Event::freeAllInstances();
   std::cout << std::endl;
 }
 

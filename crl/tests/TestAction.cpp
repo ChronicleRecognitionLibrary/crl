@@ -113,8 +113,8 @@ void testLoginLogout()
 
   RecognitionEngine engine(&std::cout, RecognitionEngine::VERBOSE);
 
-  ChronicleDetectionPiracy c1;
-  engine.addChronicle(&c1);
+  ChronicleDetectionPiracy& c1 = *(new ChronicleDetectionPiracy());
+  engine.addChronicle(c1);
 
   Event log1("Login");
   log1["username"] = "john";
@@ -147,7 +147,7 @@ void testLoginLogout()
   engine << 15.0 << cd6 << flush;
   CRL::testInteger((long)c1.getRecognitionSet().size(), 6, false);
 
-  c1.deepDelete();
+  c1.deepDestroy();
   std::cout << std::endl;
 }
 
@@ -185,8 +185,7 @@ void testAction1()
 
   std::cout << std::endl;
 
-  c1.deepDelete();
-  delete &c1;
+  c1.deepDestroy();
 }
 
 
@@ -194,7 +193,7 @@ void testAction1()
 void testActionPostEventNow_act(RecoTree& r)
 {
   std::cout << "AB RECOGNISED => EVENT C ADDED TO EVENT FLOW" << std::endl; 
-  r.getMyEngine()->addEvent( new Event("C") );
+  r.getMyEngine()->addEvent( new Event("C"), true );
 }
 
 
@@ -224,8 +223,7 @@ void testActionPostEventNow()
 
   std::cout << std::endl;
 
-  c2.deepDelete();
-  delete &c2;
+  c2.deepDestroy();
 }
 
 
@@ -233,7 +231,7 @@ void testActionPostEventInFuture_act(RecoTree& r)
 {
   std::cout << "AB RECOGNISED => EVENT C ADDED TO EVENT FLOW IN 4.0 sec" << std::endl; 
   DateType d = r.getMyEngine()->getCurrentTime() + 4.0;
-  r.getMyEngine()->addEvent( new Event("C", d) );
+  r.getMyEngine()->addEvent( new Event("C", d), true );
 }
 
 void testActionPostEventInFuture()
@@ -263,8 +261,7 @@ void testActionPostEventInFuture()
 
   std::cout << std::endl;
 
-  c2.deepDelete();
-  delete &c2;
+  c2.deepDestroy();
 }
 
 
@@ -305,8 +302,7 @@ void testChangeDelay()
 
   std::cout << std::endl;
 
-  c1.deepDelete();
-  delete &c1;
+  c1.deepDestroy();
 }
 
 
@@ -323,6 +319,7 @@ void testAction()
   testActionPostEventNow();
   testActionPostEventInFuture();
   testChangeDelay();
+  Event::freeAllInstances();
   std::cout << std::endl;
 }
 

@@ -68,6 +68,12 @@ namespace CRL
                      << std::flush;
   }
 
+  //! Destructor: deletes only the events created by the engine itself
+  RecognitionEngine::~RecognitionEngine(){
+    clearEventBuffer();
+    //clearChronicleList();
+  }
+
 
   /** \param[in] cr pointer to the chronicle which is to be detected
   */
@@ -124,7 +130,7 @@ namespace CRL
   *
   *   \param[in] e pointer to the event to be inserted in the flow.
   */
-  void RecognitionEngine::addEvent(CRL::Event* e)
+  void RecognitionEngine::addEvent(CRL::Event* e, bool toDelete)
   {
     CRL_LOG(DETAILED) << "Evts buffer ==> : " << eventBufferToString() << std::endl << std::flush;
 
@@ -136,12 +142,12 @@ namespace CRL
         e->setDate(this->_currentTime);
 
       e->setOrder(_currentOrder); _currentOrder++;
-      _eventBuffer.push_back(e);
+      _eventBuffer.push_back(EventStored (e,toDelete));
     }
     else  // otherwise, the buffer contains elements
     {
       // Iterator
-      std::list<CRL::Event*>::iterator it;
+      std::list<EventStored>::iterator it;
 
       // If the event is not dated, it is inserted, either at the end by dating it 
       // at the date of the event preceding it, either at the current date 
@@ -150,9 +156,9 @@ namespace CRL
       {
         it = _eventBuffer.end();              // "After" the last element
         it--;                                 // Last element
-        e->setDate((*it)->getDate());
+        e->setDate((*it).first->getDate());
         e->setOrder(_currentOrder); _currentOrder++;
-        _eventBuffer.push_back(e);
+        _eventBuffer.push_back(EventStored (e,toDelete));
       }
       else
       {
@@ -165,22 +171,22 @@ namespace CRL
 
         // Its place is sought for, and it is inserted
         it = _eventBuffer.begin();
-        while ( ( it != _eventBuffer.end() ) && ( (*it)->getDate() <= e->getDate() ) )
+        while ( ( it != _eventBuffer.end() ) && ( (*it).first->getDate() <= e->getDate() ) )
           it++;
 
         if (it == _eventBuffer.end()) {
           it--;
-          e->setOrder((*it)->getOrder()+1);
+          e->setOrder((*it).first->getOrder()+1);
           it++;
         }
         else {
-          e->setOrder((*it)->getOrder());
-          std::list<CRL::Event*>::iterator it2;
+          e->setOrder((*it).first->getOrder());
+          std::list<EventStored>::iterator it2;
           for (it2=it; it2!=_eventBuffer.end(); it2++)
-            (*it2)->setOrder((*it2)->getOrder()+1);
+            (*it2).first->setOrder((*it2).first->getOrder()+1);
         }
         _currentOrder++;
-        _eventBuffer.insert(it, e);
+        _eventBuffer.insert(it, EventStored (e,toDelete));
       }
     }
     CRL_LOG(VERBOSE) << "Added Event     : " << e->getName()
@@ -194,9 +200,9 @@ namespace CRL
 
   /** \param[in] e pointer to the event to be inserted in the flow.
   */
-  void RecognitionEngine::addEvent(CRL::Event& e)
+  void RecognitionEngine::addEvent(CRL::Event& e, bool toDelete)
   {
-    addEvent(&e);
+    addEvent(&e, toDelete);
   }
 
 
@@ -205,7 +211,7 @@ namespace CRL
   */
   RecognitionEngine& RecognitionEngine::operator<<(const char* name)
   {
-    this->addEvent(new Event(std::string(name)));
+    this->addEvent(new Event(std::string(name)), true);
     return *this;
   }
 
@@ -214,7 +220,7 @@ namespace CRL
   */
   RecognitionEngine& RecognitionEngine::operator<<(const std::string& name) 
   {
-    this->addEvent(new Event(name));
+    this->addEvent(new Event(name), true);
     return *this;
   }
 
@@ -223,7 +229,7 @@ namespace CRL
   */
   RecognitionEngine& RecognitionEngine::operator<<(CRL::Event &e) 
   {
-    this->addEvent(&e);
+    this->addEvent(&e, false);
     return *this;
   }
 
@@ -232,7 +238,7 @@ namespace CRL
   */
   RecognitionEngine& RecognitionEngine::operator<<(CRL::Event *e) 
   {
-    this->addEvent(e);
+    this->addEvent(e, false);
     return *this;
   }
 
@@ -242,13 +248,13 @@ namespace CRL
   RecognitionEngine& RecognitionEngine::operator<<(const double& d)
   {
 	  DateType dd = d;
-    this->addEvent(new Event(dd));
+    this->addEvent(new Event(dd), true);
     return *this;
   }
 
 
 
-  /** Deletes all the pointers to the events, in the input buffer
+  /** Removes all the events from the input buffer
   *   #_eventBuffer, before their recognition. Does not call the
   *   destructors of the events.
   */
@@ -269,24 +275,27 @@ namespace CRL
   int RecognitionEngine::process(const DateType& date)
   {
     int count = 0;
-    std::list<CRL::Event*>::iterator it = _eventBuffer.begin();
+    std::list<EventStored>::iterator it = _eventBuffer.begin();
 
     // As long as the end of the buffer has not been reached and as long as the date of the events
-    // to be processed is prior or equal to "d"
-    while ( (it != _eventBuffer.end()) && ((*it)->getDate() <= date) )
+    // to be processed is prior or equal to date
+    while ( (it != _eventBuffer.end()) && ((*it).first->getDate() <= date) )
     {
     	DateType look=this->lookAhead();
-    	if (look < (*it)->getDate())
+    	if (look < (*it).first->getDate())
     	{
         Event* e = new Event(look);
-        process(e);
-        _eventBuffer.remove(e);
+        addEvent(e, true);
+        processEvent(e->getDate(), e);
+        removeEvent(e);
+        //process(e);
+        //_eventBuffer.remove(e);
         this->_currentTime = look;
     	}
     	else
     	{
-        this->_currentTime = (*it)->getDate();
-        processEvent((*it)->getDate(), *it);
+        this->_currentTime = (*it).first->getDate();
+        processEvent((*it).first->getDate(), (*it).first);
         count++;
         it=_eventBuffer.erase(it);
     	}
@@ -301,15 +310,21 @@ namespace CRL
         if (look < date)
         {
           Event* e = new Event(look);
-          process(e);
-          _eventBuffer.remove(e);
+          addEvent(e,true);
+          processEvent(e->getDate(), e);
+          removeEvent(e);
+          //process(e);
+          //_eventBuffer.remove(e);
           this->_currentTime = look;
         }
         else
         {
           Event* e = new Event(date);
-          process(e);
-          _eventBuffer.remove(e);
+          addEvent(e, true);
+          processEvent(e->getDate(), e);
+          removeEvent(e);
+          //process(e);
+          //_eventBuffer.remove(e);
           this->_currentTime = date;
         }
       }
@@ -320,28 +335,30 @@ namespace CRL
     return count;
   }
 
-
+  
   /** Adds event \e e to the input buffer, and then processes it by 
   *   updating the recognition sets of all the chronicles.
   *   \param[in] e pointer to the event to be taken into account
   */
+  /*
   int RecognitionEngine::process(CRL::Event *e)
   {
     addEvent(e);
     processEvent(e->getDate(), e);
     return 1;
   }
-
+  */
 
   /** Adds event \e e to the input buffer, and then processes it by 
   *   updating the recognition sets of all the chronicles.
   *   \param[in] e event to be taken into account
   */
+  /*
   int RecognitionEngine::process(CRL::Event &e)
   {
     return process(&e);
   }
-
+  */
 
   /** The function returns the minimum of the lookahead of all the active chronicles.
   *   In other words, the date until which the recognition engine
@@ -389,6 +406,22 @@ namespace CRL
   }
 
 
+  /** Internal class method. Removes an event from the input buffer.
+  */
+  void RecognitionEngine::removeEvent(CRL::Event* e)
+  {
+    std::list<EventStored>::iterator it;
+    for (it=_eventBuffer.begin(); it!=_eventBuffer.end();it++)
+    {
+      if ( (*it).first == e )
+      {
+        _eventBuffer.erase(it);
+        return;
+      }
+    }
+  }
+
+
   /** Internal class method. Calls method Chronicle::purgeNewRecognitions()
   *   on all the chronicles to be recognised. This method empties the eponymous list.
   */
@@ -413,7 +446,6 @@ namespace CRL
       (*it)->purgeOldRecognitions();
     }
   }
-
 
 
   /** \return string with the #_insertionPolicy name
@@ -448,20 +480,21 @@ namespace CRL
     CRL_LOG(VERBOSE) << "Insert. policy  : CURRENT_TIME" << std::endl << std::flush;
   }
 
+
   /** Activates the deleting policy of too old recognitions
    *  recursively and for all chronicles, setting the peremption
    *  duration to \a d.
    *  \param[in] d is the value of the peremption duration
    */
   void RecognitionEngine::activateForget(double d)
-   {
+  {
     _purgeOldRecognitions=true;
     std::list<CRL::Chronicle*>::iterator it;
     for (it=_rootChronicles.begin(); it!=_rootChronicles.end();it++)
     {
       (*it)->setPeremptionDuration(d, true);
     }
-   }
+  }
 
 
   /** Displays the content of a list of events (for example the input buffer of
@@ -469,14 +502,14 @@ namespace CRL
   *   \param[in] s the list of events
   *   \return string "{ (e1,t1), (e2,t2), ... }"
   */
-  std::string RecognitionEngine::eventListToString(const std::list<Event*> &s)
-  {
+  std::string RecognitionEngine::eventListToString(const std::list<EventStored> &s)
+  { 
     std::stringstream ss;
     ss << "{";
-    std::list<Event*>::const_iterator it;
+    std::list<EventStored>::const_iterator it;
     for (it=s.begin(); it!=s.end();it++)
     {
-      ss << "(" << (*it)->getName() << "," << (*it)->getDate() << ")" ;
+      ss << "(" << (*it).first->getName() << "," << (*it).first->getDate() << ")" ;
     }
     ss << "}";
     return ss.str();
@@ -508,7 +541,7 @@ namespace CRL
       std::string name, date;
       std::getline(is, name, ',');
       std::getline(is, date, ')');
-      engine.addEvent(new Event(name, strtod(date.c_str(),NULL)));
+      engine.addEvent(new Event(name, strtod(date.c_str(),NULL)), true);
     }
     return is;
   }
