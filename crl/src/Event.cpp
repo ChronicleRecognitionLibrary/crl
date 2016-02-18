@@ -92,23 +92,6 @@ namespace CRL
   }
 
 
-  /** Allocation of array of events is forbidden, as it is not
-  *   possible to store the individual instances.
-  */
-  void* Event::operator new[](size_t size)
-  {
-    throw std::runtime_error("Event::new[] is forbidden");
-  }
-
-
-  /** Freeing array of events is forbidden.
-  */
-  void Event::operator delete[](void* ptr)
-  {
-    throw std::runtime_error("Event::delete[] is forbidden");
-  }
-
-
   /** Deletes all the instances of list _dynamicInstances
   */
   void Event::freeAllInstances()
@@ -123,7 +106,6 @@ namespace CRL
     }
     //_dynamicInstances.clear();
   }
-
 
 
   std::ostream& operator<<(std::ostream& os, const Event& e) 

@@ -108,12 +108,6 @@ namespace CRL {
     //! Operator delete, removes the instance from the list
     void operator delete(void* ptr);
 
-    //! Operator new[] is forbidden
-    void* operator new[](size_t size);
-
-    //! Operator delete[] is forbidden
-    void operator delete[](void* ptr);
-
     //! Deletes every dynamic instances of Event class
     static void freeAllInstances();
 
@@ -146,6 +140,14 @@ namespace CRL {
 
    //! Input reception of an event
    friend std::istream& operator>>(std::istream& is, Event& e);
+
+  private:
+
+    //! Operator new[] is forbidden
+    void* operator new[](size_t size);
+
+    //! Operator delete[] is forbidden
+    void operator delete[](void* ptr);
 
   }; // class Event
 
