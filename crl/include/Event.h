@@ -29,7 +29,7 @@
 // INCLUDE FILES
 // ----------------------------------------------------------------------------
 
-#include <set>
+#include <list>
 #include <string>
 #include <iostream>
 
@@ -88,8 +88,8 @@ namespace CRL {
     //! Order (once in the recognition engine buffer)
     long _order;
 
-    //! Set of instances allocated on the heap (dynamic allocation)
-    static std::set<Event*> _dynamicInstances;
+    //! List of instances allocated on the heap (dynamic allocation)
+    static std::list<Event*> _dynamicInstances;
 
   public:
 

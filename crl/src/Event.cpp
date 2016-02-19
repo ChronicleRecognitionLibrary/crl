@@ -38,7 +38,7 @@ namespace CRL
 
 
   //! Initialisation of the list
-  std::set<Event*> Event::_dynamicInstances;
+  std::list<Event*> Event::_dynamicInstances;
 
 
   /** Builds an event of name \a name, not dated.
@@ -77,7 +77,7 @@ namespace CRL
   void* Event::operator new(size_t size)
   {
     void *ptr = (void *)malloc(size);
-    _dynamicInstances.insert((Event*)ptr);
+    _dynamicInstances.push_back((Event*)ptr);
     return ptr;
   }
 
@@ -87,7 +87,7 @@ namespace CRL
   */
   void Event::operator delete(void* ptr)
   {
-    _dynamicInstances.erase((Event*)ptr);
+    _dynamicInstances.remove((Event*)ptr);
     free(ptr);
   }
 
@@ -97,14 +97,13 @@ namespace CRL
   void Event::freeAllInstances()
   {
     Event* tmp;
-    std::set<Event*>::iterator it;
+    std::list<Event*>::iterator it;
     for(it = _dynamicInstances.begin(); it != _dynamicInstances.end(); )
     {
       tmp = (*it);
       it = _dynamicInstances.erase(it);
       delete tmp;
     }
-    //_dynamicInstances.clear();
   }
 
 
