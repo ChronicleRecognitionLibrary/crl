@@ -45,8 +45,11 @@ namespace CRL {
   {
   private:
 
+    //! Pair of property and boolean indicating if the manager should delete the property
+    typedef std::pair<Property*,bool> PropertyStored;
+
     //! Manages a property list indexed by names
-    std::map<std::string, Property*> properties;
+    std::map<std::string, PropertyStored> properties;
 
   public:
 
@@ -60,7 +63,7 @@ namespace CRL {
     int countProperties() const;
 
     //! Inserts a pair (name - value)
-    void insertProperty(const std::string& s, Property* p);
+    void insertProperty(const std::string& s, Property* p, bool toDelete);
 
     //! Copies the properties, except possibly the anonymous property
     void copyProperties(const PropertyManager& p, bool exceptAnonymous = false);

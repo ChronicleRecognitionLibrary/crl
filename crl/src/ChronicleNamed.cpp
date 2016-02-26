@@ -110,7 +110,7 @@ namespace CRL
           // and renames it "_alias = code"
           Property* tmpProp = (*it)->findProperty(Context::ANONYMOUS());
           if ( tmpProp != NULL )
-            tmp->insertProperty(_alias, tmpProp);
+            tmp->insertProperty(_alias, tmpProp, false);
 
           applyActionFunction(tmp);
         }

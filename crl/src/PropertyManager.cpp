@@ -55,13 +55,13 @@ namespace CRL
     return (int)properties.size();
   }
 
-  /** The insertion method does not do anything is the name provided for the attribute already exists.
+  /** The insertion method does not do anything if the name provided for argument already exists.
   *   \param[in] s name of the attribute to be inserted
   *   \param[in] p value of the attribute
   */
-  void PropertyManager::insertProperty(const std::string& s, Property* p)
+  void PropertyManager::insertProperty(const std::string& s, Property* p, bool toDelete)
   { 
-    properties.insert(std::pair<std::string, Property*> (s, p));
+    properties.insert(std::pair<std::string, PropertyStored > ( s, std::pair<Property*,bool>(p, toDelete) ) );
   }
 
 
@@ -72,10 +72,10 @@ namespace CRL
   */
   void PropertyManager::copyProperties(const PropertyManager& p, bool exceptAnonymous)
   {
-    std::map<std::string, Property*>::const_iterator it;
+    std::map<std::string, PropertyStored>::const_iterator it;
     for (it=p.properties.begin(); it!=p.properties.end(); it++)
       if ( (exceptAnonymous == false) || ((*it).first != Context::ANONYMOUS()) )
-        insertProperty( (*it).first, (*it).second );
+        insertProperty( (*it).first, (*it).second.first, false);
   }
 
 
@@ -99,7 +99,7 @@ namespace CRL
 
     Property* prop = new Property;
     prop->copyProperties(p, exceptAnonymous);
-    insertProperty( Context::ANONYMOUS(), prop );
+    insertProperty( Context::ANONYMOUS(), prop, true);
   }
 
 
@@ -107,9 +107,9 @@ namespace CRL
   */
   Property* PropertyManager::findProperty(const std::string& s) const
   {
-    std::map<std::string, Property*>::const_iterator it = properties.find(s);
+    std::map<std::string, PropertyStored>::const_iterator it = properties.find(s);
     if (it != properties.end())
-      return (it->second);
+      return (it->second.first);
     else
       return NULL;
   }
@@ -119,9 +119,9 @@ namespace CRL
   */
   Property* PropertyManager::findProperty(char const * const s) const
   {
-    std::map<std::string, Property*>::const_iterator it = properties.find(s);
+    std::map<std::string, PropertyStored>::const_iterator it = properties.find(s);
     if (it != properties.end())
-      return (it->second);
+      return (it->second.first);
     else
       return NULL;
   }
@@ -134,13 +134,13 @@ namespace CRL
   */
   Property& PropertyManager::operator[](char const * const s)
   {
-    std::map<std::string, Property*>::iterator it = properties.find(s);
+    std::map<std::string, PropertyStored>::iterator it = properties.find(s);
     if (it != properties.end())
-      return *(it->second);
+      return *(it->second.first);
     else
     {
       Property* p = new Property();
-      insertProperty( s, p );
+      insertProperty( s, p, true );
       return *p;
     }
   }
@@ -164,9 +164,9 @@ namespace CRL
   */
   const Property& PropertyManager::operator[](char const * const s) const
   {
-    std::map<std::string, Property*>::const_iterator it = properties.find(s);
+    std::map<std::string, PropertyStored>::const_iterator it = properties.find(s);
     if (it != properties.end())
-      return *(it->second);
+      return *(it->second.first);
     else
       throw(std::string("Property ")+s+std::string(" not found"));
   }
