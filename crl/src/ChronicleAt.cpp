@@ -104,12 +104,12 @@ namespace CRL
           RecoTreeSingle* r = new RecoTreeSingle(e);
           r->copyDateAndOrder(*e);
           // The attributes of r are the ones of the recognition *it
-          r->copyProperties(**it);
+          r->copyProperties(**it, false, false); // Untransfer ownership
           if ( hasOutputFunction() )
           {
             PropertyManager pm;
             applyOutputFunction(**it, pm);
-            r->shiftProperties(pm, true);
+            r->upgradeProperties(pm, true, true); // Transfer ownership
           }
           applyActionFunction(r);
         }

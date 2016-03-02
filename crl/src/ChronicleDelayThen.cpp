@@ -124,7 +124,8 @@ namespace CRL
     {
       if ( ((*itL)->getMaxDate() + _delay) == d )
       {
-        PropertyManager xL(**itL, true); // except \bot
+        PropertyManager xL;
+        xL.copyProperties(**itL, true, false); // except \bot
         if ( applyPredicate(xL) )
         { 
           RecoTree* tmpR;
@@ -138,13 +139,13 @@ namespace CRL
 
           RecoTree* tmp = new RecoTreeCouple(*itL, tmpR, true);
           tmp->copyDateAndOrder(**itL, *tmpR);
-          tmp->copyProperties(**itL, true);
+          tmp->copyProperties(**itL, true, false); // Untransfer ownership
 
           if ( hasOutputFunction() )
           {
             PropertyManager pm;
             applyOutputFunction(xL, pm);
-            tmp->shiftProperties(pm, true);
+            tmp->upgradeProperties(pm, true, true); // Transfer ownership
           }
           applyActionFunction(tmp);
 

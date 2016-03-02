@@ -28,6 +28,8 @@
 
 #include "Event.h"
 #include "Chronicle.h"
+#include "Operators.h"
+#include "ChronicleConjunction.h"
 #include "RecoTreeSingle.h"
 #include "TestUtils.h"
 
@@ -46,6 +48,8 @@ public:
   DateType lookAhead(const DateType& tcurr) const { return 0.0; }
   void eval(const std::string&, const RecoTree&, PropertyManager&) {  }
   void setMyEngine(CRL::RecognitionEngine*) {  }
+  Chronicle* getChild1() { return NULL; }
+  Chronicle* getChild2() { return NULL; }
 };
 
 
@@ -76,6 +80,39 @@ void testChronicle()
   CRL::testBoolean(tc1.isIn(*r1, tc1.getNewRecognitions()), false);
   CRL::testBoolean(tc1.isIn(*r1, tc1.getRecognitionSet()), true);
   CRL::testBoolean(tc1.isIn(*r2, tc1.getRecognitionSet()), true);
+
+  // Tree accessors
+  Chronicle& cT     = T(1.0);
+  Chronicle& cA     = $(A);
+  Chronicle& cB     = $(B);
+  Chronicle& cAT    = AT(cA);
+  Chronicle& cAnd   = cA && cB;
+  Chronicle& cNamed = $$(cA,aa);
+  Chronicle& cDelay = cA + 1.0;
+  
+  CRL::testBoolean(cT.getChild() == NULL, true);
+  CRL::testBoolean(cT.getChildLeft() == NULL, true);
+  CRL::testBoolean(cT.getChildRight() == NULL, true);
+
+  CRL::testBoolean(cA.getChild() == NULL, true);
+  CRL::testBoolean(cA.getChildLeft() == NULL, true);
+  CRL::testBoolean(cA.getChildRight() == NULL, true);
+
+  CRL::testBoolean(cAT.getChild() == &cA, true);
+  CRL::testBoolean(cAT.getChildLeft() == &cA, true);
+  CRL::testBoolean(cAT.getChildRight() == NULL, true);
+
+  CRL::testBoolean(cAnd.getChild() == &cA, true);
+  CRL::testBoolean(cAnd.getChildLeft() == &cA, true);
+  CRL::testBoolean(cAnd.getChildRight() == &cB, true);
+
+  CRL::testBoolean(cDelay.getChild() == &cA, true);
+  CRL::testBoolean(cDelay.getChildLeft() == &cA, true);
+  CRL::testBoolean(cDelay.getChildRight() == NULL, true);
+
+  CRL::testBoolean(cNamed.getChild() == &cA, true);
+  CRL::testBoolean(cNamed.getChildLeft() == &cA, true);
+  CRL::testBoolean(cNamed.getChildRight() == NULL, true);
 
   Event::freeAllInstances();
   std::cout << std::endl;

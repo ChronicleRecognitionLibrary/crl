@@ -236,14 +236,20 @@ namespace CRL {
     //! Output flow for tests
     friend std::ostream& operator<<(std::ostream& os, const Chronicle& cr);
 
+    //! Return sub-chronicle if exist (left member for binary chronicles)
+    virtual Chronicle* getChild1() = 0;
 
+    //! Return sub-chronicle if exist (right member for binary chronicles)
+    virtual Chronicle* getChild2() = 0;
+
+    //! Return the (first) sub-chronicle
     Chronicle* getChild() { return getChild1(); }
+
+    //! Returns the left part of binary chrronicles
     Chronicle* getChildLeft() { return getChild1(); }
+
+    //! Return the right part of binary chronicles
     Chronicle* getChildRight() { return getChild2(); }
-
-    virtual Chronicle* getChild1() { return NULL; }
-    virtual Chronicle* getChild2() { return NULL; }
-
 
 
   protected:

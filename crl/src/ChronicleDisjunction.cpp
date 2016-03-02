@@ -101,18 +101,18 @@ namespace CRL
            it != _opLeft->getNewRecognitions().end(); it++)
       {
         PropertyManager x1;
-        x1.copyProperties(**it, true);
+        x1.copyProperties(**it, true, false); // Untransfer ownership
 
         if ( applyPredicate(x1) )
         {
           RecoTree* tmp = new RecoTreeCouple((*it), NULL);
           tmp->copyDateAndOrder(**it);
-          tmp->copyProperties(x1);
+          tmp->copyProperties(x1, false, false); // Untransfer ownership
           if ( hasOutputFunction() )
           {
             PropertyManager pm;
             applyOutputFunction(x1, pm);
-            tmp->shiftProperties(pm, true);
+            tmp->upgradeProperties(pm, true, true); // Transfer ownership
           }
           applyActionFunction(tmp);
         }
@@ -124,18 +124,18 @@ namespace CRL
            it != _opRight->getNewRecognitions().end(); it++)
       {
         PropertyManager x1;
-        x1.copyProperties(**it, true);
+        x1.copyProperties(**it, true, false); // Untransfer ownership
 
         if ( applyPredicate(x1) )
         {
           RecoTree* tmp = new RecoTreeCouple(NULL, (*it));
           tmp->copyDateAndOrder(**it);
-          tmp->copyProperties(x1);
+          tmp->copyProperties(x1, true, false); // Untransfer ownership
           if ( hasOutputFunction() )
           {
             PropertyManager pm;
             applyOutputFunction(x1, pm);
-            tmp->shiftProperties(pm, true);
+            tmp->upgradeProperties(pm, true, true); // Transfer ownership
           }
           applyActionFunction(tmp);
         }

@@ -120,8 +120,9 @@ namespace CRL
              itL != _opLeft->getRecognitionSet().end(); itL++)
         {
           PropertyManager x1x2;  // Union of the properties, except anonymous
-          x1x2.copyProperties(**itL, true);
-          x1x2.copyProperties(**itR, true);  
+          x1x2.copyProperties(**itL, true, false);
+          x1x2.copyProperties(**itR, true, false);  
+
           if ( applyPredicate(x1x2) )
           {
             if (  ((*itL)->getMinOrder() > (*itR)->getMinOrder())
@@ -129,12 +130,12 @@ namespace CRL
             {
               RecoTree* tmp = new RecoTreeCouple(*itL, *itR);
               tmp->copyDateAndOrder(**itL, **itR);
-              tmp->copyProperties(x1x2); 
+              tmp->copyProperties(x1x2, false, false); // Untransfer ownership
               if ( hasOutputFunction() )
               {
                 PropertyManager pm;
                 applyOutputFunction(x1x2, pm);
-                tmp->shiftProperties(pm, true);
+                tmp->upgradeProperties(pm, true, true); // Transfer ownership
               }
               applyActionFunction(tmp);
             }

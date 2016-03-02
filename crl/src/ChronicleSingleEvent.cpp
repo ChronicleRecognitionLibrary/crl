@@ -63,7 +63,7 @@ namespace CRL
 
       // Note that when no predicate function nor predicate method are defined, the following
       // call is useless. But, for the moment, no way found to know if a predicate exists or not
-      pm.shiftProperties(*e, true);
+      pm.upgradeProperties(*e, true, false);
 
       if ( applyPredicate(pm) ) // if the predicate is verified or if there is no predicate
       {
@@ -71,11 +71,12 @@ namespace CRL
         tmp->copyDateAndOrder(*e);
 
         PropertyManager pm2;
-        pm2.copyProperties(*e, true);
+        pm2.copyProperties(*e, true, false); // Untransfer ownership
         pm2["CRL ID"]=e->getOrder();
         if ( hasOutputFunction() )
           applyOutputFunction(pm, pm2);
-        tmp->shiftProperties(pm2, true);
+        tmp->upgradeProperties(pm2, true, true); // Transfer ownership
+                                                 // thus transfers only "CRL ID"
 
         applyActionFunction(tmp);
       }

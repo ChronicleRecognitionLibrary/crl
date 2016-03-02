@@ -56,8 +56,8 @@ namespace CRL {
     //! Default constructor
     PropertyManager() { }
 
-    //! Copy constructor (except possibly the anonymous property)
-    PropertyManager(const PropertyManager& p, bool exceptAnonymous = false);
+    //! Destructor, deletes the properties owned by the manager
+    ~PropertyManager();
 
     //! Returns the number of properties
     int countProperties() const;
@@ -65,11 +65,14 @@ namespace CRL {
     //! Inserts a pair (name - value)
     void insertProperty(const std::string& s, Property* p, bool toDelete);
 
-    //! Copies the properties, except possibly the anonymous property
-    void copyProperties(const PropertyManager& p, bool exceptAnonymous = false);
+    //! Transcribe the properties, except possibly the anonymous property
+    void copyProperties(PropertyManager& p, bool exceptAnonymous, 
+                        bool transferOwnership);
                                 
     //! Adds a property which value is a set of properties, of anonymous name
-    void shiftProperties(const PropertyManager& p, bool exceptAnonymous = false);
+    void upgradeProperties(PropertyManager& p, 
+                           bool exceptAnonymous,
+                           bool transferOwnership);
 
     //! Looks for a property by its name, returns NULL if it does not exist
     Property* findProperty(char const * const s) const;

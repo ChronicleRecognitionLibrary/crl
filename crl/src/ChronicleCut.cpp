@@ -111,8 +111,8 @@ namespace CRL
     // Transfers the new recognitions of Left into temporary
     Chronicle::RecoSet::iterator it;
     for (it= _opLeft->getNewRecognitions().begin();
-      it!=  _opLeft->getNewRecognitions().end();
-      it++)
+         it!=  _opLeft->getNewRecognitions().end();
+         it++)
       _tempRecogSet.insert(*it);
 
 
@@ -131,19 +131,20 @@ namespace CRL
           if ((*itL)->getMaxOrder() < (*itR)->getMinOrder())
           {
             PropertyManager x1x2;  // Union of the properties, except anonymous
-            x1x2.copyProperties(**itL, true);
-            x1x2.copyProperties(**itR, true); 
+            x1x2.copyProperties(**itL, true, false);
+            x1x2.copyProperties(**itR, true, false); 
+
             if ( applyPredicate(x1x2) )
             {
               flag=true;
               RecoTree* tmp = new RecoTreeCouple(*itL, *itR);
               tmp->copyDateAndOrder(**itL, **itR);
-              tmp->copyProperties(x1x2);
+              tmp->copyProperties(x1x2, false, false); // Untransfer ownership
               if ( hasOutputFunction() )
               {
                 PropertyManager pm;
                 applyOutputFunction(x1x2, pm);
-                tmp->shiftProperties(pm, true);
+                tmp->upgradeProperties(pm, true, true); // Transfer ownership
               }
               applyActionFunction(tmp);
             }

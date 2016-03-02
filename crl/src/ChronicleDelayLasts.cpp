@@ -100,17 +100,18 @@ namespace CRL
       {
         if ( ((*itL)->getMaxDate() - (*itL)->getMinDate()) == _delay )
         {
-          PropertyManager xL(**itL, true); // except \bot
+          PropertyManager xL;
+          xL.copyProperties(**itL, true, false); // except \bot
           if ( applyPredicate(xL) )
           { 
             RecoTree* tmp = new RecoTreeSingle(*itL);
             tmp->copyDateAndOrder(**itL);
-            tmp->copyProperties(**itL);
+            tmp->copyProperties(**itL, false, false); // Untransfer ownership
             if ( hasOutputFunction() )
             {
               PropertyManager pm;
               applyOutputFunction(**itL, pm);
-              tmp->shiftProperties(pm, true);
+              tmp->upgradeProperties(pm, true, true); // Transfer ownership
             }
             applyActionFunction(tmp);
           }

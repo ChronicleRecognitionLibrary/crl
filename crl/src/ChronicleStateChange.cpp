@@ -150,14 +150,14 @@ namespace CRL
           if ((leftMaxOrder=(*itL)->getMaxOrder()) < (*itR)->getMinOrder())
           {
             PropertyManager x1x2;  // Union of the properties, except anonymous
-            x1x2.copyProperties(**itL, true);
-            x1x2.copyProperties(**itR, true); 
+            x1x2.copyProperties(**itL, true, false);
+            x1x2.copyProperties(**itR, true, false); 
 
             if ( applyPredicate(x1x2) )
             {
               RecoTree* tmp = new RecoTreeCouple(*itL, *itR);
               tmp->copyDateAndOrder(**itL, **itR);
-              tmp->copyProperties(x1x2);
+              tmp->copyProperties(x1x2, false, false); // Untransfer ownership
 
               // Case 1 : first recognition at a given instant, which empties the recognitions of prior instants
               if (leftMaxOrder > maxLeftMaxOrder)
@@ -172,7 +172,7 @@ namespace CRL
                 {
                   PropertyManager pm;
                   applyOutputFunction(x1x2, pm);
-                  tmp->shiftProperties(pm, true);
+                  tmp->upgradeProperties(pm, true, true); // Transfer ownership
                 }
                 tmpNewReco.insert(tmp);
               }
@@ -183,7 +183,7 @@ namespace CRL
                 {
                   PropertyManager pm;
                   applyOutputFunction(x1x2, pm);
-                  tmp->shiftProperties(pm, true);
+                  tmp->upgradeProperties(pm, true, true); // Transfer ownership
                 }
                 tmpNewReco.insert(tmp);
               }

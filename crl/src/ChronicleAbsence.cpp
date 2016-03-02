@@ -139,9 +139,9 @@ namespace CRL
            && (_exclSup ? (*itR)->getMaxOrder() < (*itL)->getMaxOrder() : (*itR)->getMaxOrder() <= (*itL)->getMaxOrder()))
           {
             {
-              PropertyManager x1x2;  // Union of the propertied, except anonymous
-              x1x2.copyProperties(**itL, true);
-              x1x2.copyProperties(**itR, true);  
+              PropertyManager x1x2;  // Union of the properties, except anonymous
+              x1x2.copyProperties(**itL, true, false); // no transfer of ownership, thus
+              x1x2.copyProperties(**itR, true, false); // instance x1x2 is safely deletable
               try
               {
                if ( applyPredicate(x1x2) )
@@ -159,14 +159,14 @@ namespace CRL
         {
           RecoTree* tree = new RecoTreeSingle(*itL);
           tree->copyDateAndOrder(**itL);
-          tree->copyProperties(**itL);
+          tree->copyProperties(**itL, false, false); // Untransfer ownership
           if ( hasOutputFunction() )
           {
             try 
             {
               PropertyManager pm;
               applyOutputFunction(**itL, pm);
-              tree->shiftProperties(pm, true);
+              tree->upgradeProperties(pm, true, true); // Transfer ownership
             }
             catch(...){
               // IMPLEMENTATION CHOICE: nothing in case of crash

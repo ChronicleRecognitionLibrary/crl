@@ -65,6 +65,10 @@ void testSingleEvent1()
   ChronicleSingleEvent& A1 =  $(A);
   engine.addChronicle(A1);
 
+  CRL::testString(A1.toString().c_str(), "A");
+  A1.setName("NewA");
+  CRL::testString(A1.toString().c_str(), "NewA");
+
   ChronicleSingleEvent& A2 =  $(A);
   A2.setPredicateFunction(testSingleEvent1_pred);
   engine.addChronicle(A2);

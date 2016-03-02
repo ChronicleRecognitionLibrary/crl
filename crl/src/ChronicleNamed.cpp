@@ -104,7 +104,7 @@ namespace CRL
           {
             PropertyManager pm;
             applyOutputFunction(**it, pm);
-            tmp->shiftProperties(pm, true);
+            tmp->upgradeProperties(pm, true, true); // Transfer ownership
           }
           // Finds the anonymous property bottom (if it exists)
           // and renames it "_alias = code"

@@ -77,6 +77,12 @@ namespace CRL {
     //! Accessor (non const)
     Chronicle* getOpLeft() { return _opLeft; }
 
+    //! Accessor (non const), implementation of pure virtual
+    Chronicle* getChild1() { return _opLeft; }
+
+    //! Implementation of pure virtual
+    Chronicle* getChild2() { return NULL; }
+
     //! Accessor
     void setOpLeft(Chronicle* opLeft) { _opLeft = opLeft; }
 

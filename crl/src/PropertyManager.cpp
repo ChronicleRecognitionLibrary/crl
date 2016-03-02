@@ -38,15 +38,21 @@
 namespace CRL 
 {
 
-  /** Copies all the properties in argument, except those of name \bot, 
-  *   if the argument \a exceptAnonymous is true.
-  *   \param[in] p copied properties
-  *   \param[in] exceptAnonymous true if \bot must not be copied
+  /** Deletes the properties created by the manager itself, and marked "true"
+  *   in the pair (Property* bool)
   */
-  PropertyManager::PropertyManager(const PropertyManager& p, bool exceptAnonymous)
+  PropertyManager::~PropertyManager()
   {
-    copyProperties(p, exceptAnonymous);
+    /*
+    std::map<std::string, PropertyStored>::iterator it;
+    for(it = properties.begin(); it != properties.end(); it++)
+    {
+      if ((*it).second.second == true)
+        delete (*it).second.first;
+    }
+    */
   }
+
 
   /** \return number of properties in the manager
   */
@@ -61,7 +67,7 @@ namespace CRL
   */
   void PropertyManager::insertProperty(const std::string& s, Property* p, bool toDelete)
   { 
-    properties.insert(std::pair<std::string, PropertyStored > ( s, std::pair<Property*,bool>(p, toDelete) ) );
+    properties.insert(std::pair<std::string, PropertyStored > (s, PropertyStored(p, toDelete)));
   }
 
 
@@ -69,13 +75,28 @@ namespace CRL
   *   present, and except those of name \bot, if the argument \a exceptAnonymous is true.
   *   \param[in] p properties which are added to those of \a this
   *   \param[in] exceptAnonymous true if \bot must not be copied
+  *   \param[in] transferOwnership true to transfer the toDelete nature of the property
   */
-  void PropertyManager::copyProperties(const PropertyManager& p, bool exceptAnonymous)
+  void PropertyManager::copyProperties(PropertyManager& p, 
+                                       bool exceptAnonymous, 
+                                       bool transferOwnership)
   {
-    std::map<std::string, PropertyStored>::const_iterator it;
-    for (it=p.properties.begin(); it!=p.properties.end(); it++)
-      if ( (exceptAnonymous == false) || ((*it).first != Context::ANONYMOUS()) )
-        insertProperty( (*it).first, (*it).second.first, false);
+    std::map<std::string, PropertyStored>::iterator it;
+    if (transferOwnership)
+    { 
+      for (it=p.properties.begin(); it!=p.properties.end(); it++)
+        if ( (exceptAnonymous == false) || ((*it).first != Context::ANONYMOUS()) )
+        {
+          insertProperty( (*it).first, (*it).second.first, (*it).second.second);
+          (*it).second.second = false;
+        }
+    }
+    else
+    {
+      for (it=p.properties.begin(); it!=p.properties.end(); it++)
+        if ( (exceptAnonymous == false) || ((*it).first != Context::ANONYMOUS()) )
+          insertProperty( (*it).first, (*it).second.first, false);
+    }
   }
 
 
@@ -87,8 +108,11 @@ namespace CRL
   *   (i.e. name \bot is already used).
   *   \param[in] p properties to be processed
   *   \param[in] exceptAnonymous true if \bot must not be copied
+  *   \param[in] transferOwnership true to transfer the toDelete nature of the properties
   */
-  void PropertyManager::shiftProperties(const PropertyManager& p, bool exceptAnonymous)
+  void PropertyManager::upgradeProperties(PropertyManager& p, 
+                                          bool exceptAnonymous, 
+                                          bool transferOwnership)
   {
     if (  (p.countProperties()==0)
         || ( (exceptAnonymous)&&(p.countProperties()==1)&&(p.findProperty(Context::ANONYMOUS())) )  )
@@ -98,8 +122,8 @@ namespace CRL
       throw("shiftProperties : anonymous property already exists");
 
     Property* prop = new Property;
-    prop->copyProperties(p, exceptAnonymous);
-    insertProperty( Context::ANONYMOUS(), prop, true);
+    prop->copyProperties(p, exceptAnonymous, transferOwnership);
+    insertProperty(Context::ANONYMOUS(), prop, true);
   }
 
 

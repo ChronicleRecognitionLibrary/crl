@@ -31,6 +31,7 @@
 
 #include <list>
 #include <string>
+#include <iostream>
 
 #include "PropertyManager.h"
 
@@ -95,6 +96,9 @@ namespace CRL {
 
     //! Default constructor
     Property() : dataType(NONE) { }
+
+    //! Destructor
+    ~Property() { }
 
     //! Allocation operators from simple types
     Property& operator=(const bool& x);
