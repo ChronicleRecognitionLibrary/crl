@@ -43,14 +43,12 @@ namespace CRL
   */
   PropertyManager::~PropertyManager()
   {
-    /*
     std::map<std::string, PropertyStored>::iterator it;
     for(it = properties.begin(); it != properties.end(); it++)
     {
       if ((*it).second.second == true)
         delete (*it).second.first;
     }
-    */
   }
 
 
