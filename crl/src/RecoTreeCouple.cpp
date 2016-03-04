@@ -121,7 +121,7 @@ namespace CRL
   *   Displays symbol "bottom" for anonymous events.
   *   Otherwise, displays the contained son node.
   *   \param[in] ntab tabulations to be respected for the tree view display
-  *   \param[in,out] os flux d'affichage
+  *   \param[in,out] os display flow
   */
   void RecoTreeCouple::prettyPrint(std::ostream& os, int ntab) const
   {

@@ -77,7 +77,6 @@ namespace CRL
           applyOutputFunction(pm, pm2);
         tmp->upgradeProperties(pm2, true, true); // Transfer ownership
                                                  // thus transfers only "CRL ID"
-
         applyActionFunction(tmp);
       }
     }

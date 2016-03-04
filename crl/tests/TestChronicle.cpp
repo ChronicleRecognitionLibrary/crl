@@ -119,11 +119,69 @@ void testChronicle()
 }
 
 
+void testRecoTree()
+{
+  CRL::CRL_ErrReport::START("CRL", "RecoTree");
+  std::cout << "##### ------- Tests of Chronicle RecoTree" << std::endl << std::endl;
+
+  Event e1(1.0); //date = 1.0
+  e1.setOrder(2);
+
+  RecoTreeSingle r1;
+  r1.copyDateAndOrder(e1);
+  CRL::testInteger(r1.getMinOrder(), 2);
+  CRL::testInteger(r1.getMaxOrder(), 2);
+  CRL::testDouble(r1.getMinDate(), 1.0);
+  CRL::testDouble(r1.getMaxDate(), 1.0);
+
+  RecoTreeSingle r2;
+  r2.copyDateAndOrder(r1);
+  CRL::testInteger(r2.getMinOrder(), 2);
+  CRL::testInteger(r2.getMaxOrder(), 2);
+  CRL::testDouble(r2.getMinDate(), 1.0);
+  CRL::testDouble(r2.getMaxDate(), 1.0);
+
+  RecoTreeSingle r3;
+  r3.setMinOrder(3);
+  r3.setMaxOrder(3);
+  r3.setMinDate(2.0);
+  r3.setMaxDate(2.0);
+
+  RecoTreeCouple r1r3(&r1, &r3, false);
+  r1r3.copyDateAndOrder(r1,r3);
+  CRL::testInteger(r1r3.getMinOrder(), 2);
+  CRL::testInteger(r1r3.getMaxOrder(), 3);
+  CRL::testDouble(r1r3.getMinDate(), 1.0);
+  CRL::testDouble(r1r3.getMaxDate(), 2.0);
+
+  r1r3.copyDateAndOrder(r1,r3);
+  CRL::testInteger(r1r3.getMinOrder(), 2);
+  CRL::testInteger(r1r3.getMaxOrder(), 3);
+  CRL::testDouble(r1r3.getMinDate(), 1.0);
+  CRL::testDouble(r1r3.getMaxDate(), 2.0);
+
+  r1r3.copyDateAndOrder(r3,e1);
+  CRL::testInteger(r1r3.getMinOrder(), 2);
+  CRL::testInteger(r1r3.getMaxOrder(), 3);
+  CRL::testDouble(r1r3.getMinDate(), 1.0);
+  CRL::testDouble(r1r3.getMaxDate(), 2.0);
+
+  Event e2(2.0); 
+  e2.setOrder(3);
+  r1r3.copyDateAndOrder(r1,e2);
+  CRL::testInteger(r1r3.getMinOrder(), 2);
+  CRL::testInteger(r1r3.getMaxOrder(), 3);
+  CRL::testDouble(r1r3.getMinDate(), 1.0);
+  CRL::testDouble(r1r3.getMaxDate(), 2.0);
+}
+
+
 #ifdef UNITARY_TEST
 int main() 
 {
   try
   {
+    testRecoTree();
     testChronicle();
     
     CRL::CRL_ErrReport::PRINT_ALL();

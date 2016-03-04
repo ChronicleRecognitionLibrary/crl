@@ -98,7 +98,7 @@ namespace CRL
       {
         if( applyPredicate(**it) ) // If the predicate is verified or if there is no predicate
         {
-          RecoTree* tmp = new RecoTreeSingle(*it);
+          RecoTree* tmp = new RecoTreeSingle(*it, true);
           tmp->copyDateAndOrder(**it);
           if ( hasOutputFunction() )
           {

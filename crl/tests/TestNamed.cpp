@@ -55,6 +55,28 @@ void testNamed1_func(const PropertyManager& inp, PropertyManager& outp)
   catch(...) {}
 }
 
+
+void testNamed0()
+{
+  std::cout << "------- Simple test for step-by-step analysis of memory leaks" 
+              << std::endl << std::endl;
+
+  RecognitionEngine engine(&std::cout, RecognitionEngine::VERBOSE);
+
+  ChronicleNamed& A1 =  $$($(A),aa);
+  engine.addChronicle(A1);
+
+  Event a1("A");
+  a1["x"] = 1;
+
+  engine << 0.0 << a1 << flush;
+  CRL::testInteger((long)A1.getRecognitionSet().size(), 1, false);
+  std::cout << std::endl;
+
+  A1.deepDestroy();
+}
+
+
 void testNamed1()
 {
   std::cout << "------- Tests with chronicles (A), (A->x)P[X], and  (((A)f[X])->x)P[X]" 
@@ -125,6 +147,7 @@ void testNamed()
   CRL::CRL_ErrReport::START("CRL","ChronicleNamed");
   std::cout << "##### ------- Tests of ChronicleNamed class"
               << std::endl << std::endl;
+  testNamed0();
   testNamed1();
   Event::freeAllInstances();
   std::cout << std::endl;

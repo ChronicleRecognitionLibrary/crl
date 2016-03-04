@@ -96,7 +96,7 @@ namespace CRL
   */
   int Context::size() const
   {
-    return data.size();
+    return (int)(data.size());
   }
 
 
