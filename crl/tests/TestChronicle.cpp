@@ -114,6 +114,14 @@ void testChronicle()
   CRL::testBoolean(cNamed.getChildLeft() == &cA, true);
   CRL::testBoolean(cNamed.getChildRight() == NULL, true);
 
+  cT.destroy();
+  cA.destroy();
+  cB.destroy();
+  cAT.destroy();
+  cAnd.destroy();
+  cNamed.destroy();
+  cDelay.destroy();
+
   Event::freeAllInstances();
   std::cout << std::endl;
 }
@@ -183,7 +191,7 @@ int main()
   {
     testRecoTree();
     testChronicle();
-    
+
     CRL::CRL_ErrReport::PRINT_ALL();
 
     return 0;
